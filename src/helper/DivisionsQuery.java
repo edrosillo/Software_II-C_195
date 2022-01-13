@@ -1,4 +1,4 @@
 package helper;
 
-public class DivisionsQuery {
+public abstract class DivisionsQuery {
 }

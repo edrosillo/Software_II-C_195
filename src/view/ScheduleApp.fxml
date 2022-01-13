@@ -53,6 +53,9 @@
                <HBox.margin>
                   <Insets right="-25.0" />
                </HBox.margin>
+               <font>
+                  <Font name="SansSerif Regular" size="13.0" />
+               </font>
             </TextField>
          </children>
       </HBox>

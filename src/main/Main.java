@@ -26,7 +26,7 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../view/login.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
         root.setStyle("-fx-font-family: 'SansSerif';");
         primaryStage.setTitle("Appointment Management System");
         primaryStage.setScene(new Scene(root, 880, 607));
@@ -41,8 +41,8 @@ public class Main extends Application {
      */
 
     public static void main(String[] args) {
-        launch(args);
         JDBC.openConnection();
+        launch(args);
         JDBC.closeConnection();
         //ResourceBundle rb = ResourceBundle.getBundle("main/Nat", Locale.getDefault());
 

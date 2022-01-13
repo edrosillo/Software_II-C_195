@@ -1,4 +1,4 @@
 package helper;
 
-public class AppointmentQuery {
+public abstract class AppointmentQuery {
 }

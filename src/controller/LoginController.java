@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import helper.JDBC;
+import helper.UserQuery;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,10 +19,10 @@ import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
     @FXML
-    private TextField emailIdField;
+    private TextField userNameTxt;
 
     @FXML
-    private PasswordField passwordField;
+    private PasswordField passwordTxt;
 
     @FXML
     private Button submitButton;
@@ -43,38 +44,42 @@ public class LoginController implements Initializable {
 
     @FXML
     void onActionExit(ActionEvent event) {
+        JDBC.closeConnection();
         System.exit(0);
     }
 
     @FXML
-    public void login(ActionEvent event) throws SQLException, IOException {
-        System.out.println(emailIdField.getText());
-        System.out.println(passwordField.getText());
+    public void onActionLogin(ActionEvent event) throws SQLException, IOException {
+        try {
+            if (userNameTxt.getText().isEmpty()) {
+                displayAlert(3);
+                return;
+            }
+            if (passwordTxt.getText().isEmpty()) {
+                displayAlert(4);
+                return;
+            }
 
-        if (emailIdField.getText().isEmpty()) {
-            displayAlert(3);
-            return;
+            String userName = userNameTxt.getText();
+            String password = passwordTxt.getText();
+
+            boolean successLogin = UserQuery.validate(userName, password);
+
+            if (!successLogin) {
+                displayAlert(5);
+            } else {
+                stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/ScheduleApp.fxml"));
+                scene.setStyle("-fx-font-family: 'SansSerif';");
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
         }
-        if (passwordField.getText().isEmpty()) {
-            displayAlert(4);
-            return;
+        catch(Exception e){
+            // print SQL exception information
+            System.out.println(e.getMessage());
         }
 
-        String emailId = emailIdField.getText();
-        String password = passwordField.getText();
-        ;
-
-        boolean flag = JDBC.validate(emailId, password);
-
-        if (!flag) {
-            displayAlert(4);
-        } else {
-            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/view/scheduleapp.fxml"));
-            scene.setStyle("-fx-font-family: 'SansSerif';");
-            stage.setScene(new Scene(scene));
-            stage.show();
-        }
     }
 
     /**

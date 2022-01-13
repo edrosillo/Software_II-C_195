@@ -1,4 +1,4 @@
 package helper;
 
-public class CountriesQuery {
+public abstract class CountriesQuery {
 }
