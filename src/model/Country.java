@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class Country {
 
-    public int countryID;
+    private int countryID;
 
-    public String country;
+    private String country;
 
-    public LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-    public LocalDateTime createTime;
+    private LocalDateTime createTime;
 
     public Country(int countryID, String country, LocalDateTime createDate, LocalDateTime createTime) {
         this.countryID = countryID;

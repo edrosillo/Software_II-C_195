@@ -4,13 +4,13 @@ import java.time.LocalDateTime;
 
 public class Division {
 
-    public int divisionID;
+    private int divisionID;
 
-    public String division;
+    private String division;
 
-    public LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-    public LocalDateTime createTime;
+    private LocalDateTime createTime;
 
     public Division(int divisionID, String division, LocalDateTime createDate, LocalDateTime createTime) {
         this.divisionID = divisionID;

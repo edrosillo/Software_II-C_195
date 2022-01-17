@@ -29,6 +29,10 @@ public abstract class ListManager {
 
     public static ObservableList<Customer> getAllCustomers() {return allCustomers; }
 
+    public static void addAppointment(Appointment appointment) { allAppointments.add(appointment);}
+
+    public static ObservableList<Appointment> getAllAppointments() {return allAppointments; }
+
     public static Customer lookupCustomer(int customerID) {
         Customer customerSearch = null;
 

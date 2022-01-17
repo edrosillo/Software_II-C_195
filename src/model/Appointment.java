@@ -1,47 +1,46 @@
 package model;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class Appointment {
 
-    public int appointmentID;
+    private int appointmentID;
 
-    public String title;
+    public String getCustomerName() {
+        return customerName;
+    }
 
-    public String description;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
+    }
 
-    public String location;
+    private String customerName;
 
-    public String type;
+    private String title;
 
-    public LocalDateTime startDate;
+    private String description;
 
-    public LocalDateTime startTime;
+    private String location;
 
-    public LocalDateTime endDate;
+    private String type;
 
-    public LocalDateTime endTime;
+    private LocalDateTime start;
 
-    public LocalDateTime createdDate;
+    private LocalDateTime end;
 
-    public LocalDateTime createdTime;
-
-    public String createdBy;
-
-    public Appointment(int appointmentID, String title, String description, String location, String type, LocalDateTime startDate, LocalDateTime startTime, LocalDateTime endDate, LocalDateTime endTime, LocalDateTime createdDate, LocalDateTime createdTime, String createdBy) {
+    public Appointment(int appointmentID, String customerName, String title, String description, String location, String type, LocalDateTime start, LocalDateTime end) {
         this.appointmentID = appointmentID;
+        this.customerName = customerName;
         this.title = title;
         this.description = description;
         this.location = location;
         this.type = type;
-        this.startDate = startDate;
-        this.startTime = startTime;
-        this.endDate = endDate;
-        this.endTime = endTime;
-        this.createdDate = createdDate;
-        this.createdTime = createdTime;
-        this.createdBy = createdBy;
+        this.start = start;
+        this.end = end;
     }
 
     public int getAppointmentID() {
@@ -84,59 +83,19 @@ public class Appointment {
         this.type = type;
     }
 
-    public LocalDateTime getStartDate() {
-        return startDate;
+    public LocalDateTime getStart() {
+        return start;
     }
 
-    public void setStartDate(LocalDateTime startDate) {
-        this.startDate = startDate;
+    public void setStart(LocalDateTime start) {
+        this.start = start;
     }
 
-    public LocalDateTime getStartTime() {
-        return startTime;
+    public LocalDateTime getEnd() {
+        return end;
     }
 
-    public void setStartTime(LocalDateTime startTime) {
-        this.startTime = startTime;
-    }
-
-    public LocalDateTime getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(LocalDateTime endDate) {
-        this.endDate = endDate;
-    }
-
-    public LocalDateTime getEndTime() {
-        return endTime;
-    }
-
-    public void setEndTime(LocalDateTime endTime) {
-        this.endTime = endTime;
-    }
-
-    public LocalDateTime getCreatedDate() {
-        return createdDate;
-    }
-
-    public void setCreatedDate(LocalDateTime createdDate) {
-        this.createdDate = createdDate;
-    }
-
-    public LocalDateTime getCreatedTime() {
-        return createdTime;
-    }
-
-    public void setCreatedTime(LocalDateTime createdTime) {
-        this.createdTime = createdTime;
-    }
-
-    public String getCreatedBy() {
-        return createdBy;
-    }
-
-    public void setCreatedBy(String createdBy) {
-        this.createdBy = createdBy;
+    public void setEnd(LocalDateTime end) {
+        this.end = end;
     }
 }

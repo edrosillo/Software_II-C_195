@@ -4,19 +4,19 @@ import java.time.LocalDateTime;
 
 public class Customer {
 
-    public int customerID;
+    private int customerID;
 
-    public String customerName;
+    private String customerName;
 
-    public String address;
+    private String address;
 
-    public String postalCode;
+    private String postalCode;
 
-    public String phone;
+    private String phone;
 
-    public LocalDateTime createDate;
+    private LocalDateTime createDate;
 
-    public LocalDateTime createTime;
+    private LocalDateTime createTime;
 
     public Customer(int customerID, String customerName, String address, String postalCode, String phone, LocalDateTime createDate, LocalDateTime createTime) {
         this.customerID = customerID;

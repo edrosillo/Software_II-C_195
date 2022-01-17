@@ -7,7 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
@@ -51,31 +51,43 @@ public class AddAppointmentController implements Initializable {
     private TextField typeTxt;
 
     @FXML
-    private ChoiceBox<?> monthCB;
+    private ComboBox<String> monthCB;
+    private String[] months = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 
     @FXML
-    private ChoiceBox<?> dayCB;
+    private ComboBox<String> dayCB;
+    private String[] days = {"01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31"};
+
 
     @FXML
-    private ChoiceBox<?> yearCB;
+    private ComboBox<String> yearCB;
+    private String[] years = {"2021","2022","2023","2024"};
 
     @FXML
-    private ChoiceBox<?> startMinuteCB;
+    private ComboBox<String> startMinuteCB;
+
+    private String[] startMinute = {"00","15","30","45"};
 
     @FXML
-    private ChoiceBox<?> startTimeOfDayCB;
+    private ComboBox<String> startTimeOfDayCB;
+    private String[] startTimeOfDay = {"AM","PM"};
 
     @FXML
-    private ChoiceBox<?> startHourCB;
+    private ComboBox<String> startHourCB;
+    private String[] startHour = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 
     @FXML
-    private ChoiceBox<?> endMinuteCB;
+    private ComboBox<String> endMinuteCB;
+
+    private String[] endMinute = {"00","15","30","45"};
 
     @FXML
-    private ChoiceBox<?> endTimeOfDayCB;
+    private ComboBox<String> endTimeOfDayCB;
+    private String[] endTimeOfDay = {"AM","PM"};
 
     @FXML
-    private ChoiceBox<?> endHourCB;
+    private ComboBox<String> endHourCB;
+    private String[] endHour = {"01","02","03","04","05","06","07","08","09","10","11","12"};
 
     @FXML
     void onActionDisplayMain(ActionEvent event) throws IOException {
@@ -103,6 +115,15 @@ public class AddAppointmentController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        monthCB.getItems().addAll(months);
+        dayCB.getItems().addAll(days);
+        yearCB.getItems().addAll(years);
+        startHourCB.getItems().addAll(startHour);
+        startMinuteCB.getItems().addAll(startMinute);
+        startTimeOfDayCB.getItems().addAll(startTimeOfDay);
+        endHourCB.getItems().addAll(endHour);
+        endMinuteCB.getItems().addAll(endMinute);
+        endTimeOfDayCB.getItems().addAll(endTimeOfDay);
 
     }
 

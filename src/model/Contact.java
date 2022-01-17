@@ -2,11 +2,11 @@ package model;
 
 public class Contact {
 
-    public int contactID;
+    private int contactID;
 
-    public String contactName;
+    private String contactName;
 
-    public String contactEmail;
+    private String contactEmail;
 
     public Contact(int contactID, String contactName, String contactEmail) {
         this.contactID = contactID;

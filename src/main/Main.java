@@ -1,11 +1,14 @@
 package main;
 
+import helper.AppointmentQuery;
 import helper.JDBC;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
+import java.sql.SQLException;
 
 /**
  *
@@ -40,13 +43,11 @@ public class Main extends Application {
      * @param args In the case of this application the arguments are all the information that will populate the Parts and Products tables.
      */
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SQLException {
         JDBC.openConnection();
+        AppointmentQuery.select();
         launch(args);
         JDBC.closeConnection();
-        //ResourceBundle rb = ResourceBundle.getBundle("main/Nat", Locale.getDefault());
 
-        //if(Locale.getDefault().getLanguage().equals("es"))
-       //     System.out.println(rb.getString());
     }
 }
