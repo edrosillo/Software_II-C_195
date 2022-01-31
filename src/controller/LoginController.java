@@ -13,16 +13,23 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
+import model.User;
 
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
-    @FXML
-    private TextField userNameTxt;
+
+    //public static User currentUser = new User();
+    //public static Locale userLocale = Locale.getDefault();
+    //public static ResourceBundle rb = ResourceBundle.getBundle("main/Nat",userLocale);
 
     @FXML
-    private PasswordField passwordTxt;
+    private TextField userNameTF;
+
+    @FXML
+    private PasswordField passwordTF;
 
     @FXML
     private Button submitButton;
@@ -49,19 +56,25 @@ public class LoginController implements Initializable {
     }
 
     @FXML
+    void clearLogin(ActionEvent event) {
+        userNameTF.clear();
+        passwordTF.clear();
+    }
+
+    @FXML
     public void onActionLogin(ActionEvent event) throws SQLException, IOException {
         try {
-            if (userNameTxt.getText().isEmpty()) {
+            if (userNameTF.getText().isEmpty()) {
                 displayAlert(3);
                 return;
             }
-            if (passwordTxt.getText().isEmpty()) {
+            if (passwordTF.getText().isEmpty()) {
                 displayAlert(4);
                 return;
             }
 
-            String userName = userNameTxt.getText();
-            String password = passwordTxt.getText();
+            String userName = userNameTF.getText();
+            String password = passwordTF.getText();
 
             boolean successLogin = UserQuery.validate(userName, password);
 
@@ -69,7 +82,7 @@ public class LoginController implements Initializable {
                 displayAlert(5);
             } else {
                 stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-                scene = FXMLLoader.load(getClass().getResource("/view/ScheduleApp.fxml"));
+                scene = FXMLLoader.load(getClass().getResource("/view/AppointmentMenu.fxml"));
                 scene.setStyle("-fx-font-family: 'SansSerif';");
                 stage.setScene(new Scene(scene));
                 stage.show();
@@ -141,6 +154,8 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
+        //LoginController.userLocale = Locale.getDefault();
+        //LoginController.rb = ResourceBundle.getBundle("Resources/lang",Log_In_Controller.uLocale);
 
     }
 

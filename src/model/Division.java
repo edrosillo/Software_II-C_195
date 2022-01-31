@@ -1,53 +1,67 @@
 package model;
 
-import java.time.LocalDateTime;
+import helper.DivisionsQuery;
+import javafx.collections.ObservableList;
+
 
 public class Division {
 
     private int divisionID;
+    private String divisionName;
+    public int countryID;
 
-    private String division;
-
-    private LocalDateTime createDate;
-
-    private LocalDateTime createTime;
-
-    public Division(int divisionID, String division, LocalDateTime createDate, LocalDateTime createTime) {
+    /**
+     *
+     * @param divisionID the division ID to set
+     * @param divisionName the division name to set
+     * @param country_ID the country ID to set
+     */
+    public Division(int divisionID, String divisionName, int countryID) {
         this.divisionID = divisionID;
-        this.division = division;
-        this.createDate = createDate;
-        this.createTime = createTime;
+        this.divisionName = divisionName;
+        this.countryID = countryID;
     }
 
-    public int getDivisionID() {
-        return divisionID;
-    }
+    /**
+     * @return the division ID
+     */
+    public int getDivisionID() { return divisionID; }
 
-    public void setDivisionID(int divisionID) {
-        this.divisionID = divisionID;
-    }
+    /**
+     * @return the division name
+     */
+    public String getDivisionName() { return divisionName; }
 
-    public String getDivision() {
+    /**
+     *
+     * @return the country ID
+     */
+    public int getCountryID() { return countryID; }
+
+
+    /** This method searches the first level division combo box for matching division ID of the customer selected.
+     * @param divId The customer's division ID.
+     * @return Returns the first level division with matching ID.*/
+    public static Division getDivisionIdMatch(int divId) {
+        ObservableList<Division> divisions = DivisionsQuery.getAllDivisions();
+
+        Division division = null;
+
+        for (int i = 0; i < divisions.size(); i++) {
+            Division firstLevelDivision = divisions.get(i);
+
+            if (firstLevelDivision.getDivisionID() != divId) {
+                continue;
+            } else {
+                division = firstLevelDivision;
+                break;
+            }
+
+        }
+
         return division;
+
     }
 
-    public void setDivision(String division) {
-        this.division = division;
-    }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
 }

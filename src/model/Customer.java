@@ -3,7 +3,6 @@ package model;
 import java.time.LocalDateTime;
 
 public class Customer {
-
     private int customerID;
 
     private String customerName;
@@ -14,27 +13,21 @@ public class Customer {
 
     private String phone;
 
-    private LocalDateTime createDate;
+    public int divisionID;
 
-    private LocalDateTime createTime;
 
-    public Customer(int customerID, String customerName, String address, String postalCode, String phone, LocalDateTime createDate, LocalDateTime createTime) {
+    public Customer(int customerID, String customerName, String address, String postalCode, String phone, int divisionID) {
         this.customerID = customerID;
         this.customerName = customerName;
         this.address = address;
         this.postalCode = postalCode;
         this.phone = phone;
-        this.createDate = createDate;
-        this.createTime = createTime;
+        this.divisionID = divisionID;
     }
 
-    public int getCustomerID() {
-        return customerID;
-    }
+    public int getCustomerID() { return customerID; }
 
-    public void setCustomerID(int customerID) {
-        this.customerID = customerID;
-    }
+    public void setCustomerID(int customerID) { this.customerID = customerID; }
 
     public String getCustomerName() {
         return customerName;
@@ -68,19 +61,5 @@ public class Customer {
         this.phone = phone;
     }
 
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
-    }
+    public int getDivisionID() { return divisionID; }
 }

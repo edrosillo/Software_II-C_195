@@ -1,9 +1,7 @@
 package controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
-import helper.JDBC;
 import helper.ListManager;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -82,7 +80,7 @@ public class ScheduleAppController implements Initializable {
     @FXML
     void onActionDisplayAddCustomer(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AddCustomer.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/CustomerMenu.fxml"));
         scene.setStyle("-fx-font-family: 'SansSerif';");
         stage.setScene(new Scene(scene));
         stage.show();
@@ -92,7 +90,7 @@ public class ScheduleAppController implements Initializable {
     @FXML
     void onActionDisplayAppointment(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/AddAppointment.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/AppointmentMenu.fxml"));
         scene.setStyle("-fx-font-family: 'SansSerif';");
         stage.setScene(new Scene(scene));
         stage.show();
@@ -110,7 +108,7 @@ public class ScheduleAppController implements Initializable {
     @FXML
     void onActionDisplayReports(ActionEvent event) throws IOException {
         stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/Reports.fxml"));
+        scene = FXMLLoader.load(getClass().getResource("/view/ReportsMenu.fxml"));
         scene.setStyle("-fx-font-family: 'SansSerif';");
         stage.setScene(new Scene(scene));
         stage.show();

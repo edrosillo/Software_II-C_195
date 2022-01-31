@@ -8,15 +8,10 @@ public class Country {
 
     private String country;
 
-    private LocalDateTime createDate;
 
-    private LocalDateTime createTime;
-
-    public Country(int countryID, String country, LocalDateTime createDate, LocalDateTime createTime) {
+    public Country(int countryID, String country) {
         this.countryID = countryID;
         this.country = country;
-        this.createDate = createDate;
-        this.createTime = createTime;
     }
 
     public int getCountryID() {
@@ -33,21 +28,5 @@ public class Country {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    public LocalDateTime getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(LocalDateTime createDate) {
-        this.createDate = createDate;
-    }
-
-    public LocalDateTime getCreateTime() {
-        return createTime;
-    }
-
-    public void setCreateTime(LocalDateTime createTime) {
-        this.createTime = createTime;
     }
 }
