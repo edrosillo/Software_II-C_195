@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="560.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerMenuController">
+<AnchorPane maxHeight="-1.0" maxWidth="-1.0" prefHeight="560.0" prefWidth="1014.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.CustomerMenuController">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#103456" height="571.0" stroke="BLACK" strokeType="INSIDE" width="1014.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#d8d8d8" height="241.0" layoutX="73.0" layoutY="74.0" stroke="BLACK" strokeType="INSIDE" width="868.0" />

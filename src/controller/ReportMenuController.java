@@ -86,7 +86,7 @@ public class ReportMenuController implements Initializable {
 
     // Report View 3 - Show Customers by Division
     @FXML Tab customerByDivisionTab;
-    @FXML TableView<ReportCustomerDivision> customerFirstLevelDivisionTableView;
+    @FXML TableView<ReportCustomerDivision> customerDivisionTable;
     @FXML TableColumn<ReportCustomerDivision, String> custbyDivDivisionCol;
     @FXML TableColumn<ReportCustomerDivision, ArrayList<String>> custbyDivCustomersCol;
 
@@ -167,19 +167,20 @@ public class ReportMenuController implements Initializable {
                 appointmentMonthsNoDuplicates.add(month);
             }
         }
-        ObservableList<ReportAppointmentByMonth> appointmentReportMonths = FXCollections.observableArrayList();
+        ObservableList<ReportAppointmentByMonth> reportAppointmentMonths = FXCollections.observableArrayList();
         for (Month month : appointmentMonthsNoDuplicates) {
             int total = Collections.frequency(appointmentMonths, month);
             monthToSet = month.name();
             totalToSet = total;
             ReportAppointmentByMonth monthVar = new ReportAppointmentByMonth(monthToSet, totalToSet);
-            appointmentReportMonths.add(monthVar);
+            reportAppointmentMonths.add(monthVar);
         }
-        appointmentsByMonthTable.setItems(appointmentReportMonths);
+        System.out.println(reportAppointmentMonths.size());
+        appointmentsByMonthTable.setItems(reportAppointmentMonths);
     }
 
     /**
-     * combines above functions
+     * This function combines above functions so that the tables in this tab get populated with the necessary information
      */
     public void addTypeMonthTotalAppointments() throws SQLException {
         addAppointmentTypesTotals();
@@ -243,30 +244,30 @@ public class ReportMenuController implements Initializable {
      * This method matches Division ID with Customer Division ID in order to prevent duplicates additions to the database.
      */
     public void addCustomersByDivision() throws SQLException {
-        String divisionToSet ;
-        ArrayList<String> customerListToSet;
+        String divisionSet ;
+        ArrayList<String> customerListSet;
         ReportCustomerDivision record;
-        String previousSetDivisionName = "";
+        String previousDivisionName = "";
 
-        ObservableList<Division> allFirstLevelDivisionData = DivisionsQuery.getAllDivisions();
+        ObservableList<Division> allDivisionData = DivisionsQuery.getAllDivisions();
         ObservableList<Customer> allCustomerData = CustomersQuery.getAllCustomers();
         ObservableList<ReportCustomerDivision> observableListToSet = FXCollections.observableArrayList();
 
-        for (Division division : allFirstLevelDivisionData) {
-            customerListToSet = new ArrayList<>();
+        for (Division division : allDivisionData) {
+            customerListSet = new ArrayList<>();
             for (Customer customer : allCustomerData) {
                 if (division.getDivisionID() == customer.divisionID) {
-                    divisionToSet = division.getDivisionName();
-                    customerListToSet.add(customer.getCustomerName());
-                    record = new ReportCustomerDivision(divisionToSet, customerListToSet);
-                    if (!record.getFirstLevelDivision().equals(previousSetDivisionName)) {
+                    divisionSet = division.getDivisionName();
+                    customerListSet.add(customer.getCustomerName());
+                    record = new ReportCustomerDivision(divisionSet, customerListSet);
+                    if (!record.getFirstLevelDivision().equals(previousDivisionName)) {
                         observableListToSet.add(record);
-                        previousSetDivisionName = record.getFirstLevelDivision();
+                        previousDivisionName = record.getFirstLevelDivision();
                     }
                 }
             }
         }
-        customerFirstLevelDivisionTableView.setItems(observableListToSet);
+        customerDivisionTable.setItems(observableListToSet);
     }
 
 
@@ -284,7 +285,7 @@ public class ReportMenuController implements Initializable {
 
         // Report View 1b - Display Appointments by Month
         apptsByMonMonthCol.setCellValueFactory(new PropertyValueFactory<>("appointmentMonth"));
-        apptsByMonTotalCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTotal"));
+        apptsByMonTotalCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTotalMonth"));
 
         // Report View 2 - Display Appointments by Contact
         apptsByContactIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));

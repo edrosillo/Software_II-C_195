@@ -25,6 +25,7 @@ import model.Customer;
 import model.User;
 
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -117,6 +118,8 @@ public class AppointmentMenuController implements Initializable {
     public TableColumn<Appointment, LocalDateTime> apptAllEndDATCol;
     @FXML
     public TableColumn<Appointment, Integer> apptAllCustomerIDCol;
+    @FXML
+    public TableColumn<Appointment, Integer> apptAllUserIDCol;
 
     // Definition of the Month View Appointments Table
     @FXML
@@ -141,6 +144,8 @@ public class AppointmentMenuController implements Initializable {
     public TableColumn<Appointment, LocalDateTime> apptMonthEndDATCol;
     @FXML
     public TableColumn<Appointment, Integer> apptMonthCustomerIDCol;
+    @FXML
+    public TableColumn<Appointment, Integer> apptMonthUserIDCol;
 
     // Definition of the Week View Appointments Table
     @FXML
@@ -165,6 +170,8 @@ public class AppointmentMenuController implements Initializable {
     public TableColumn<Appointment, LocalDateTime> apptWeekEndDATCol;
     @FXML
     public TableColumn<Appointment, Integer> apptWeekCustomerIDCol;
+    @FXML
+    public TableColumn<Appointment, Integer> apptWeekUserIDCol;
 
 
     /**
@@ -190,9 +197,82 @@ public class AppointmentMenuController implements Initializable {
     }
 
     /**
+     *
+     * checks for appointments with 15 minutes -- requirement 3E
+     * requirements note, "You must use "test" as the username and password to login to your application." therefore
+     * user 1 was considered to be the only active user
+     * displays appropriate message upon log-in
+     *
+     * @throws SQLException if exception has occurred
+     */
+    public void appointmentNotification() throws SQLException {
+        int currentUserID = 1;
+        LocalDateTime currentLogInTime = LocalDateTime.now();
+        LocalDateTime logInTimeMinusFifteen = LocalDateTime.now().minusMinutes(15);
+        LocalDateTime logInTimePlusFifteen = LocalDateTime.now().plusMinutes(15);
+        LocalDateTime startCheck;
+        LocalDateTime endCheck;
+        int appointmentID = 0;
+        LocalDateTime startDisplay = null;
+        LocalDateTime endDisplay = null;
+        boolean upcomingAppointment = false;
+        boolean ongoingAppointment = false;
+        ObservableList<Appointment> appointmentsObservableList = AppointmentQuery.getAllAppointments();
+        for (Appointment appointment : appointmentsObservableList) {
+            startCheck = appointment.getStart();
+            endCheck = appointment.getEnd();
+            int userIDCheck = appointment.getUserID();
+            if ((userIDCheck == currentUserID) &&
+                    (startCheck.isAfter(logInTimeMinusFifteen) || startCheck.isEqual(logInTimeMinusFifteen)) &&
+                    (startCheck.isBefore(logInTimePlusFifteen) || (startCheck.isEqual(logInTimePlusFifteen)))) {
+                appointmentID = appointment.getAppointmentID();
+                startDisplay = startCheck;
+                endDisplay = endCheck;
+                upcomingAppointment = true;
+            }
+            else if ((userIDCheck == currentUserID) &&
+                    (currentLogInTime.isAfter(startCheck) || currentLogInTime.isEqual(startCheck)) &&
+                    (currentLogInTime.isBefore(endCheck) || (currentLogInTime.isEqual(endCheck)))) {
+                System.out.println(currentLogInTime);
+                System.out.println(startCheck);
+                System.out.println(endCheck);
+                appointmentID = appointment.getAppointmentID();
+                startDisplay = startCheck;
+                endDisplay = endCheck;
+                ongoingAppointment = true;
+            }
+        }
+        if (upcomingAppointment) {
+            JOptionPane.showMessageDialog(null,
+                    "There is an appointment within 15 minutes" +
+                            "\nAppointment ID: " + appointmentID +
+                            "\nStart Date: " + startDisplay.toLocalDate() +
+                            "\nEnd Date: " + endDisplay.toLocalDate() +
+                            "\nStart Time: " + startDisplay.toLocalTime() +
+                            "\nEnd Time: " + endDisplay.toLocalTime(),
+                    "Upcoming Appointment", JOptionPane.WARNING_MESSAGE);
+        }
+        else if (ongoingAppointment) {
+            JOptionPane.showMessageDialog(null,
+                    "There is a current appointment" +
+                            "\nAppointment ID: " + appointmentID +
+                            "\nStart Date: " + startDisplay.toLocalDate() +
+                            "\nEnd Date: " + endDisplay.toLocalDate() +
+                            "\nStart Time: " + startDisplay.toLocalTime() +
+                            "\nEnd Time: " + endDisplay.toLocalTime(),
+                    "Current Appointment", JOptionPane.WARNING_MESSAGE);
+        }
+        else {
+            JOptionPane.showMessageDialog(null,
+                    "No upcoming appointments",
+                    "Appointments", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+
+    /**
      * The method is used to add the data to the Appointment Tables in the different tabs.
-     * gets all appointment data from DB via DBAccess.DBAppointments
-     * filters appointments to appropriate tableView (month vs week) and adds all appointments to all
+     * The data is retrieved from MySQL via the AppointmentsQuery class
      */
     public void addAppointmentDataToTables() throws SQLException {
         ObservableList<Appointment> allAppointmentsList = AppointmentQuery.getAllAppointments();
@@ -523,7 +603,6 @@ public class AppointmentMenuController implements Initializable {
 
 
     private void displayAlert(int alertType) {
-
         Alert alert = new Alert(Alert.AlertType.ERROR);
         Alert alertInfo = new Alert(Alert.AlertType.INFORMATION);
         DialogPane dp = alert.getDialogPane();
@@ -605,6 +684,7 @@ public class AppointmentMenuController implements Initializable {
         apptAllStartDATCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptAllEndDATCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         apptAllCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        apptAllUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
         apptMonthAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         apptMonthTitleCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));
@@ -615,6 +695,7 @@ public class AppointmentMenuController implements Initializable {
         apptMonthStartDATCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptMonthEndDATCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         apptMonthCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        apptMonthUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
         apptWeekAppointmentIDCol.setCellValueFactory(new PropertyValueFactory<>("appointmentID"));
         apptWeekTitleCol.setCellValueFactory(new PropertyValueFactory<>("appointmentTitle"));
@@ -625,6 +706,7 @@ public class AppointmentMenuController implements Initializable {
         apptWeekStartDATCol.setCellValueFactory(new PropertyValueFactory<>("start"));
         apptWeekEndDATCol.setCellValueFactory(new PropertyValueFactory<>("end"));
         apptWeekCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
+        apptWeekUserIDCol.setCellValueFactory(new PropertyValueFactory<>("userID"));
 
 
         ObservableList<Contact> allContactsObservableList = null;

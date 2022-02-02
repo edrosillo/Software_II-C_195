@@ -1,6 +1,8 @@
 package controller;
 
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import helper.JDBC;
@@ -12,18 +14,29 @@ import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.User;
 
 import java.net.URL;
+import java.sql.Timestamp;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class LoginController implements Initializable {
 
-    //public static User currentUser = new User();
-    //public static Locale userLocale = Locale.getDefault();
-    //public static ResourceBundle rb = ResourceBundle.getBundle("main/Nat",userLocale);
+    @FXML
+    private Text titleLbl;
+
+    @FXML
+    private Text userNameLbl;
+
+    @FXML
+    private Text passwordLbl;
 
     @FXML
     private TextField userNameTF;
@@ -32,7 +45,16 @@ public class LoginController implements Initializable {
     private PasswordField passwordTF;
 
     @FXML
-    private Button submitButton;
+    private Button loginBtn;
+
+    @FXML
+    private Button resetBtn;
+
+    @FXML
+    private Button exitBtn;
+
+    @FXML
+    private Text userLocationLbl;
 
     /**
      * The stage object that will be used to hold the GUI and data of the new screens.
@@ -43,6 +65,10 @@ public class LoginController implements Initializable {
      * The scene object that will be used to generate the new screens.
      */
     Parent scene;
+
+    boolean successLogin = false;
+    String errorTitle = "Log-In Failed";
+    String errorMessage ="Invalid username or password";
 
     /**
      * This method Exits the program.
@@ -72,11 +98,10 @@ public class LoginController implements Initializable {
                 displayAlert(4);
                 return;
             }
-
             String userName = userNameTF.getText();
             String password = passwordTF.getText();
 
-            boolean successLogin = UserQuery.validate(userName, password);
+            successLogin = UserQuery.validate(userName, password);
 
             if (!successLogin) {
                 displayAlert(5);
@@ -92,7 +117,66 @@ public class LoginController implements Initializable {
             // print SQL exception information
             System.out.println(e.getMessage());
         }
+        userActivity();
+    }
 
+    /**
+     * This function sets checks the user's language and location settings.
+     * It will translate the interface into French if user’s computer language setting = fr.
+     * Headers, Buttons, Labels and Error Messages are translated into French.
+     */
+    public void checkLanguage() {
+        ZoneId currentZone = ZoneId.systemDefault();
+        userLocationLbl.setText("User Location: " + currentZone);
+        Locale French = new Locale("fr", "FR");
+        ResourceBundle rb = ResourceBundle.getBundle("main/Nat", Locale.FRENCH);
+        if(Locale.getDefault().getLanguage().equals("fr")) {
+            Locale.setDefault(French);
+            titleLbl.setText((rb.getString("Appointment,Management,System")).replaceAll(",", " "));
+            userNameLbl.setText((rb.getString("Username")).replaceAll(",", " "));
+            passwordLbl.setText((rb.getString("password")).replaceAll(",", " "));
+            //passwordTF.setPromptText(rb.getString("password").replaceAll(",", " "));
+            loginBtn.setText(rb.getString("Submit"));
+            resetBtn.setText(rb.getString("Reset"));
+            exitBtn.setText(rb.getString("Exit"));
+            int indexOfSeparation = (currentZone.toString()).indexOf("/");
+            String printRegion = (currentZone.toString()).substring(0, indexOfSeparation);
+            String printCountryFR;
+            if (printRegion.equals("Pacific") || printRegion.equals("America") || printRegion.equals("Europe")) {
+                printCountryFR = (rb.getString(printRegion));
+                int indexOfEnd = (currentZone.toString()).length();
+                String locationToPrint = (currentZone.toString()).substring(indexOfSeparation, indexOfEnd);
+                userLocationLbl.setText((rb.getString("User,Location")).replaceAll(",", " ") +
+                        ": " + printCountryFR + locationToPrint);
+            }
+            else {
+                userLocationLbl.setText((rb.getString("User,Location")).replaceAll(",", " ") +
+                        ": " + currentZone);
+            }
+            errorMessage = rb.getString("Invalid,username,or,password").replaceAll(",", " ");
+            errorTitle = rb.getString("Log-In,Failed").replaceAll(",", " ");
+        }
+    }
+
+
+    /**
+     * This function used to create a log file of the user's activity
+     * which adds new entries as the application gets used
+     */
+    public void userActivity() throws IOException {
+        LocalDate loginDate = LocalDateTime.now().toLocalDate();
+        Timestamp loginTimestamp = Timestamp.valueOf(LocalDateTime.now());
+        FileWriter fileWriter = new FileWriter("login_activity.txt", true);
+        PrintWriter outputFile = new PrintWriter(fileWriter);
+        outputFile.print("Date: " + loginDate + " -- ");
+        outputFile.print("Timestamp: " + loginTimestamp + " -- ");
+        if (successLogin) {
+            outputFile.print("Status: Attempt Successful\n");
+        }
+        else {
+            outputFile.print("Status: Attempt Not Successful\n");
+        }
+        outputFile.close();
     }
 
     /**
@@ -132,8 +216,8 @@ public class LoginController implements Initializable {
                 alertError.showAndWait();
                 break;
             case 5:
-                alertError.setTitle("Failed");
-                alertError.setHeaderText("Please enter correct Email and Password");
+                alertError.setTitle(errorTitle);
+                alertError.setHeaderText(errorMessage);
                 alertError.showAndWait();
                 break;
             case 6:
@@ -143,6 +227,7 @@ public class LoginController implements Initializable {
                 break;
         }
     }
+
 
     /**
      * This method initializes the MainController and populates the Part and Product table views.
@@ -154,8 +239,8 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        //LoginController.userLocale = Locale.getDefault();
-        //LoginController.rb = ResourceBundle.getBundle("Resources/lang",Log_In_Controller.uLocale);
+        checkLanguage();
+
 
     }
 

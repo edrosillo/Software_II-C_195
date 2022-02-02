@@ -18,6 +18,7 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
+import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -116,20 +117,25 @@ public class CustomerMenuController implements Initializable {
         for (Appointment appointment : appointmentsObservableList) {
             int customerIDCheck = appointment.getCustomerID();
             int appointmentIDDelete = appointment.getAppointmentID();
-            //String appointmentTypeToDisplay = appointment.getAppointmentType();
+            String appointmentTypeMessage = appointment.getAppointmentType();
             if (customerIDDelete == customerIDCheck) {
                 String sqlDeleteAppointments = "DELETE FROM appointments WHERE Appointment_ID = ?";
                 PreparedStatement ps1 = JDBC.connection.prepareStatement(sqlDeleteAppointments);
                 ps1.setInt(1, appointmentIDDelete);
                 ps1.execute();
-                displayAlert(3);
+                JOptionPane.showMessageDialog(null,
+                        "Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentTypeMessage + "\nhas been deleted from Database",
+                        "Appointment Deleted", JOptionPane.INFORMATION_MESSAGE);
             }
         }
         ps.setInt(1, customerIDDelete);
         ps.execute();
         addCustomerDataToTable();
         clearData();
-        displayAlert(4);
+        JOptionPane.showMessageDialog(null,
+                "Customer with ID: " + customerIDDelete + "has been deleted from Database",
+                "Customer Deleted", JOptionPane.INFORMATION_MESSAGE);
+
 
     }
 
@@ -353,7 +359,6 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * resets boxes for appropriate user interaction
-     *
      */
     public void clearData() {
         customerTable.getSelectionModel().clearSelection();
@@ -378,10 +383,10 @@ public class CustomerMenuController implements Initializable {
 
         customerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
         customerNameCol.setCellValueFactory(new PropertyValueFactory<>("customerName"));
-        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("customerAddress"));
+        customerAddressCol.setCellValueFactory(new PropertyValueFactory<>("address"));
         customerDivisionCol.setCellValueFactory(new PropertyValueFactory<>("divisionID"));
-        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<>("customerPostalCode"));
-        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("customerPhoneNumber"));
+        customerPostalCodeCol.setCellValueFactory(new PropertyValueFactory<>("PostalCode"));
+        customerPhoneCol.setCellValueFactory(new PropertyValueFactory<>("phone"));
 
         ObservableList<Country> allCountries = CountriesQuery.getAllCountries();
         ObservableList<String> countryNames = FXCollections.observableArrayList();
@@ -394,7 +399,7 @@ public class CustomerMenuController implements Initializable {
         ObservableList<Division> allDivisions = DivisionsQuery.getAllDivisions();
         ObservableList<String> divisionAllNames = FXCollections.observableArrayList();
 
-        // Lambda #1
+        // Lambda #1 -
         allDivisions.forEach(Division -> divisionAllNames.add(Division.getDivisionName()));
         setCustomerOptionAddAndUpdateButtonActions();
 

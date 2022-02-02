@@ -2,31 +2,31 @@ package model;
 
 public class ReportAppointmentByMonth {
 
-    public String appointmentByMonth;
-    public int appointmentByMonthTotal;
+    public String appointmentMonth;
+    public int appointmentTotalMonth;
 
     /**
      * @param appointmentMonth the appointment month to set
-     * @param appointmentTotal the appointment total to set
+     * @param appointmentTotalMonth the appointment total to set
      */
-    public ReportAppointmentByMonth(String appointmentMonth, int appointmentTotal) {
-        this.appointmentByMonth = appointmentMonth;
-        this.appointmentByMonthTotal = appointmentTotal;
+    public ReportAppointmentByMonth(String appointmentMonth, int appointmentTotalMonth) {
+        this.appointmentMonth = appointmentMonth;
+        this.appointmentTotalMonth = appointmentTotalMonth;
     }
 
     /**
      * @return the appointment month
      */
-    public String getAppointmentByMonth() {
-        return appointmentByMonth;
+    public String getAppointmentMonth() {
+        return appointmentMonth;
     }
 
     /**
      *
      * @return the appointment total
      */
-    public int getAppointmentByMonthTotal() {
-        return appointmentByMonthTotal;
+    public int getAppointmentTotalMonth() {
+        return appointmentTotalMonth;
     }
 
 }

@@ -8,6 +8,9 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javax.swing.*;
+import javax.swing.plaf.FontUIResource;
+import java.awt.*;
 import java.sql.SQLException;
 
 /**
@@ -46,6 +49,7 @@ public class Main extends Application {
     public static void main(String[] args) throws SQLException {
         JDBC.openConnection();
         //AppointmentQuery.select();
+        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("SansSerif", Font.PLAIN, 13)));
         launch(args);
         JDBC.closeConnection();
 
