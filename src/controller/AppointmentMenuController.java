@@ -24,8 +24,6 @@ import model.Contact;
 import model.Customer;
 import model.User;
 
-
-import javax.swing.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -243,29 +241,38 @@ public class AppointmentMenuController implements Initializable {
             }
         }
         if (upcomingAppointment) {
-            JOptionPane.showMessageDialog(null,
-                    "There is an appointment within 15 minutes" +
-                            "\nAppointment ID: " + appointmentID +
-                            "\nStart Date: " + startDisplay.toLocalDate() +
-                            "\nEnd Date: " + endDisplay.toLocalDate() +
-                            "\nStart Time: " + startDisplay.toLocalTime() +
-                            "\nEnd Time: " + endDisplay.toLocalTime(),
-                    "Upcoming Appointment", JOptionPane.WARNING_MESSAGE);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            DialogPane dp = alert.getDialogPane();
+            dp.setStyle("-fx-font-family:sans-serif");
+            alert.setTitle("Upcoming Appointment");
+            alert.setHeaderText("There is an appointment within 15 minutes" +
+                    "\nAppointment ID: " + appointmentID +
+                    "\nStart Date: " + startDisplay.toLocalDate() +
+                    "\nEnd Date: " + endDisplay.toLocalDate() +
+                    "\nStart Time: " + startDisplay.toLocalTime() +
+                    "\nEnd Time: " + endDisplay.toLocalTime());
+            alert.showAndWait();
         }
         else if (ongoingAppointment) {
-            JOptionPane.showMessageDialog(null,
-                    "There is a current appointment" +
-                            "\nAppointment ID: " + appointmentID +
-                            "\nStart Date: " + startDisplay.toLocalDate() +
-                            "\nEnd Date: " + endDisplay.toLocalDate() +
-                            "\nStart Time: " + startDisplay.toLocalTime() +
-                            "\nEnd Time: " + endDisplay.toLocalTime(),
-                    "Current Appointment", JOptionPane.WARNING_MESSAGE);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            DialogPane dp = alert.getDialogPane();
+            dp.setStyle("-fx-font-family:sans-serif");
+            alert.setTitle("Ongoing Appointment");
+            alert.setHeaderText("There is a current appointment" +
+                    "\nAppointment ID: " + appointmentID +
+                    "\nStart Date: " + startDisplay.toLocalDate() +
+                    "\nEnd Date: " + endDisplay.toLocalDate() +
+                    "\nStart Time: " + startDisplay.toLocalTime() +
+                    "\nEnd Time: " + endDisplay.toLocalTime());
+            alert.showAndWait();
         }
         else {
-            JOptionPane.showMessageDialog(null,
-                    "No upcoming appointments",
-                    "Appointments", JOptionPane.INFORMATION_MESSAGE);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            DialogPane dp = alert.getDialogPane();
+            dp.setStyle("-fx-font-family:sans-serif");
+            alert.setTitle("Alert");
+            alert.setHeaderText("There are currently no upcoming appointments.");
+            alert.showAndWait();
         }
     }
 

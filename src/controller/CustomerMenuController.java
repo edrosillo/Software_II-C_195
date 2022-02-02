@@ -18,7 +18,6 @@ import model.Country;
 import model.Customer;
 import model.Division;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.PreparedStatement;
@@ -123,19 +122,24 @@ public class CustomerMenuController implements Initializable {
                 PreparedStatement ps1 = JDBC.connection.prepareStatement(sqlDeleteAppointments);
                 ps1.setInt(1, appointmentIDDelete);
                 ps1.execute();
-                JOptionPane.showMessageDialog(null,
-                        "Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentTypeMessage + "\nhas been deleted from Database",
-                        "Appointment Deleted", JOptionPane.INFORMATION_MESSAGE);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                DialogPane dp = alert.getDialogPane();
+                dp.setStyle("-fx-font-family:sans-serif");
+                alert.setTitle("Appointment Deleted");
+                alert.setHeaderText("Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentTypeMessage + "\nhas been deleted from Database");
+                alert.showAndWait();
             }
         }
         ps.setInt(1, customerIDDelete);
         ps.execute();
         addCustomerDataToTable();
         clearData();
-        JOptionPane.showMessageDialog(null,
-                "Customer with ID: " + customerIDDelete + "has been deleted from Database",
-                "Customer Deleted", JOptionPane.INFORMATION_MESSAGE);
-
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        DialogPane dp = alert.getDialogPane();
+        dp.setStyle("-fx-font-family:sans-serif");
+        alert.setTitle("Customer Deleted");
+        alert.setHeaderText("Customer with ID: " + customerIDDelete + "has been deleted from Database");
+        alert.showAndWait();
 
     }
 

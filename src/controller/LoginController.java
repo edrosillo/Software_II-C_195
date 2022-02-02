@@ -111,6 +111,8 @@ public class LoginController implements Initializable {
                 scene.setStyle("-fx-font-family: 'SansSerif';");
                 stage.setScene(new Scene(scene));
                 stage.show();
+                AppointmentMenuController login = new AppointmentMenuController();
+                login.appointmentNotification();
             }
         }
         catch(Exception e){
@@ -171,10 +173,10 @@ public class LoginController implements Initializable {
         outputFile.print("Date: " + loginDate + " -- ");
         outputFile.print("Timestamp: " + loginTimestamp + " -- ");
         if (successLogin) {
-            outputFile.print("Status: Attempt Successful\n");
+            outputFile.print("Status: Log In Attempt Successful\n");
         }
         else {
-            outputFile.print("Status: Attempt Not Successful\n");
+            outputFile.print("Status: Log In Attempt Failed\n");
         }
         outputFile.close();
     }
