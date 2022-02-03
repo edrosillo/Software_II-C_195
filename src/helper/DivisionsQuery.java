@@ -10,7 +10,10 @@ import java.sql.SQLException;
 
 public abstract class DivisionsQuery {
 
-    /** @return Returns observable list of all first level division from the database.*/
+    /**
+     * @return Creates and Observable List of all Division data from database using a Select statement.
+     * @throws SQLException if exception has occurred
+     */
     public static ObservableList<Division> getAllDivisions(){
         ObservableList<Division> divisionList = FXCollections.observableArrayList();
 

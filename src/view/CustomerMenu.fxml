@@ -28,7 +28,7 @@
             <Font name="SansSerif Bold" size="35.0" />
          </font>
       </Text>
-      <TableView fx:id="customerTable" focusTraversable="false" layoutX="82.0" layoutY="83.0" onMouseClicked="#addCustomerDataToBoxes" prefHeight="220.0" prefWidth="850.0">
+      <TableView fx:id="customerTable" focusTraversable="false" layoutX="82.0" layoutY="83.0" onMouseClicked="#addCustomerDataToFields" prefHeight="220.0" prefWidth="850.0">
          <columns>
             <TableColumn fx:id="customerIDCol" prefWidth="58.0" text="ID" />
             <TableColumn fx:id="customerNameCol" prefWidth="212.0" text="Name" />
@@ -48,11 +48,11 @@
                   <Insets bottom="10.0" />
                </padding>
             </Label>
-            <Button fx:id="saveCustomerBtn" focusTraversable="false" mnemonicParsing="false" onAction="#saveCustomer" prefHeight="25.0" prefWidth="149.0" text="Save Customer">
+            <Button fx:id="saveCustomerBtn" focusTraversable="false" mnemonicParsing="false" onAction="#onActionSaveCustomer" prefHeight="25.0" prefWidth="149.0" text="Save Customer">
                <font>
                   <Font name="SansSerif Regular" size="13.0" />
                </font></Button>
-            <Button fx:id="modifyCustomerBtn" mnemonicParsing="false" onAction="#modifyCustomer" prefHeight="25.0" prefWidth="149.0" text="Modify Customer">
+            <Button fx:id="modifyCustomerBtn" mnemonicParsing="false" onAction="#onActionModifyCustomer" prefHeight="25.0" prefWidth="149.0" text="Modify Customer">
                <font>
                   <Font name="SansSerif Regular" size="13.0" />
                </font></Button>

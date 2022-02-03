@@ -66,6 +66,7 @@ public class LoginController implements Initializable {
      */
     Parent scene;
 
+    //Variables used in functions within Login Controller.
     boolean successLogin = false;
     String errorTitle = "Log-In Failed";
     String errorMessage ="Invalid username or password";
@@ -74,21 +75,33 @@ public class LoginController implements Initializable {
      * This method Exits the program.
      * @param event Exit button action.
      */
-
     @FXML
     void onActionExit(ActionEvent event) {
         JDBC.closeConnection();
         System.exit(0);
     }
 
+    /**
+     * Resets text fields after pressing the reset button.
+     * @param event Clicking Reset Button
+     */
     @FXML
     void clearLogin(ActionEvent event) {
         userNameTF.clear();
         passwordTF.clear();
     }
 
+    /**
+     * This function validates the Username and Password against data that is already in the Database.
+     * If fed proper credentials the program will proceed to the Appointment Menu part of the program.
+     * It triggers the appointment notification function which will tell users of they have any upcoming
+     * appointments or not.
+     * It also triggers the userActivity function which logs successful and failed log in attempts.
+     * @throws IOException
+     */
+
     @FXML
-    public void onActionLogin(ActionEvent event) throws SQLException, IOException {
+    public void onActionLogin(ActionEvent event) throws IOException {
         try {
             if (userNameTF.getText().isEmpty()) {
                 displayAlert(3);
@@ -163,7 +176,7 @@ public class LoginController implements Initializable {
 
     /**
      * This function used to create a log file of the user's activity
-     * which adds new entries as the application gets used
+     * which adds new entries as users log into the program.
      */
     public void userActivity() throws IOException {
         LocalDate loginDate = LocalDateTime.now().toLocalDate();
@@ -232,8 +245,7 @@ public class LoginController implements Initializable {
 
 
     /**
-     * This method initializes the MainController and populates the Part and Product table views.
-     *
+     * This method initializes the MainController and checks the location of the user.
      * @param url The url is used to find the relative paths for the root object.
      * @param resourceBundle The resource bundle is used to localize the root object.
      */

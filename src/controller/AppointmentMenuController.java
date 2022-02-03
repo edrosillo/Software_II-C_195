@@ -38,13 +38,6 @@ public class AppointmentMenuController implements Initializable {
      */
     Parent scene;
 
-/*  private final LocalTime absoluteStart = LocalTime.of(8, 0);
-    private final LocalTime absoluteEnd = LocalTime.of(22, 0);
-    private int customerIdCombo;
-    private LocalDateTime startLDT;
-    private LocalDateTime endLDT;*/
-
-
     @FXML
     private ToggleGroup sceneChangeTG;
 
@@ -93,7 +86,7 @@ public class AppointmentMenuController implements Initializable {
     @FXML
     private ComboBox<String> appointmentEndCB;
 
-    // Definition of the All View Appointments Table
+    // Definition of the All View Appointments Table and its columns
     @FXML
     public Tab apptAllTableTab;
     @FXML
@@ -119,7 +112,7 @@ public class AppointmentMenuController implements Initializable {
     @FXML
     public TableColumn<Appointment, Integer> apptAllUserIDCol;
 
-    // Definition of the Month View Appointments Table
+    // Definition of the Month View Appointments Table and its columns
     @FXML
     public Tab apptMonthTableTab;
     @FXML
@@ -145,7 +138,7 @@ public class AppointmentMenuController implements Initializable {
     @FXML
     public TableColumn<Appointment, Integer> apptMonthUserIDCol;
 
-    // Definition of the Week View Appointments Table
+    // Definition of the Week View Appointments Table and its columns
     @FXML
     public Tab apptWeekTableTab;
     @FXML
@@ -173,7 +166,8 @@ public class AppointmentMenuController implements Initializable {
 
 
     /**
-     * @param event When the Radio Button is clicked the scene will change to Customer Menu
+     * Switches the scene to the Customer Menu
+     * @param event The Radio Button click event
      */
     public void goToCustomerRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -184,7 +178,8 @@ public class AppointmentMenuController implements Initializable {
     }
 
     /**
-     * @param event When the Radio Button is clicked the scene will change to Reports Menu
+     * Switches the scene to the Reports Menu
+     * @param event The Radio Button click event
      */
     public void goToReportsRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -195,12 +190,9 @@ public class AppointmentMenuController implements Initializable {
     }
 
     /**
-     *
-     * checks for appointments with 15 minutes -- requirement 3E
-     * requirements note, "You must use "test" as the username and password to login to your application." therefore
-     * user 1 was considered to be the only active user
-     * displays appropriate message upon log-in
-     *
+     * Checks for appointments within the next 15 minutes
+     * Will generate a pop-up message to alert the user of any upcoming appointments within the next 15 minutes or
+     * or if there is an ongoing appointment or no appointments
      * @throws SQLException if exception has occurred
      */
     public void appointmentNotification() throws SQLException {
@@ -345,6 +337,12 @@ public class AppointmentMenuController implements Initializable {
     }
 
 
+    /**
+     * Inserts the new Appointment into the Database based on the information provided in the Text Fields and Comboboxes.
+     * Checks to see if it doesn't conflict with previously scheduled appointments and makes sure that nothing is scheduled outside of Business days/hours.
+     * @param event Clicking the Save Appointment Button
+     * @throws SQLException if exception has occurred
+     */
 
     @FXML
     void onActionSaveAppointment(ActionEvent event) throws SQLException {
@@ -374,26 +372,25 @@ public class AppointmentMenuController implements Initializable {
         LocalDateTime startLocalDateTimeToAdd = LocalDateTime.of(startLocalDate, startLocalTime);
         LocalDateTime endLocalDateTimeToAdd = LocalDateTime.of(endLocalDate, endLocalTime);
 
-        // outside of business operation check -- requirement 3D
-        // start time
+        // Set and Convert Start Time
         ZonedDateTime startLDTToZDT = ZonedDateTime.of(startLocalDateTimeToAdd, ZoneId.systemDefault());
         ZonedDateTime startZDTToZDTEST = startLDTToZDT.withZoneSameInstant(ZoneId.of("America/New_York"));
         LocalTime startAppointmentTimeCheck = startZDTToZDTEST.toLocalTime();
         DayOfWeek startAppointmentDayCheck = startZDTToZDTEST.toLocalDate().getDayOfWeek();
         int startAppointmentDayToCheckInt = startAppointmentDayCheck.getValue();
-        // end time
+        // Sent and Convert End Time
         ZonedDateTime endLDTToZDT = ZonedDateTime.of(endLocalDateTimeToAdd, ZoneId.systemDefault());
         ZonedDateTime endZDTToZDTEST = endLDTToZDT.withZoneSameInstant(ZoneId.of("America/New_York"));
         LocalTime endAppointmentTimeCheck = endZDTToZDTEST.toLocalTime();
         DayOfWeek endAppointmentDayToCheck = endZDTToZDTEST.toLocalDate().getDayOfWeek();
         int endAppointmentDayToCheckInt = endAppointmentDayToCheck.getValue();
 
-        // business operation hours/days
+        // Business hours/days
         LocalTime businessHoursStart = LocalTime.of(8, 0, 0);
         LocalTime businessHoursEnd = LocalTime.of(22, 0, 0);
         int startOfBusinessWeek = DayOfWeek.MONDAY.getValue();
         int endOfBusinessWeek = DayOfWeek.FRIDAY.getValue();
-        // time and day checks
+        // Verify that the new appointment isn't being created outside of business hours.
         if (startAppointmentTimeCheck.isBefore(businessHoursStart) || startAppointmentTimeCheck.isAfter(businessHoursEnd) || endAppointmentTimeCheck.isBefore(businessHoursStart) || endAppointmentTimeCheck.isAfter(businessHoursEnd)) {
             displayAlert(1);
             return;
@@ -409,7 +406,7 @@ public class AppointmentMenuController implements Initializable {
         String lastUpdatedByAdd = "admin";
         int customerIDAdd = Integer.parseInt(appointmentCustomerIDTF.getText());
 
-        // overlapping appointments -- requirement 3D
+        // Make sure that the new Appointment doesn't overlap with other appointments.
         ObservableList<Appointment> allAppointments = AppointmentQuery.getAllAppointments();
         for (Appointment appointment : allAppointments) {
             LocalDateTime startTimesToCheck = appointment.getStart();
@@ -454,6 +451,12 @@ public class AppointmentMenuController implements Initializable {
         clearData();
     }
 
+    /**
+     * Populates the test fields in that make up the form based on selection from the table view.
+     * Makes sure the new Appointment's time doesn't overlap with other appointments.
+     * Once user has updated any necessary information this function performs the update statement
+     * @throws SQLException if exception has occurred
+     */
 
     @FXML
     void onActionModifyAppointment(ActionEvent event) throws SQLException {
@@ -478,6 +481,7 @@ public class AppointmentMenuController implements Initializable {
             return;
         }
 
+        //Gather information of Appointment to be updated.
         int appointmentIDToUpdate = Integer.parseInt(appointmentIDTF.getText());
         String titleToUpdate = appointmentTitleTF.getText();
         String descriptionToUpdate = appointmentDescriptionTF.getText();
@@ -548,6 +552,7 @@ public class AppointmentMenuController implements Initializable {
             LocalDateTime startTimesCheck = appointment.getStart();
             LocalDateTime endTimesCheck = appointment.getEnd();
             int customerIDsCheck = appointment.getCustomerID();
+            // Check to see if selected Appointment's CustomerIDs match and if the start and/or end overlap with an existing Appointment.
             if ((appointment.getAppointmentID() != selectedAppointmentID) && (customerIDUpdate == customerIDsCheck) && (startLocalDateTimeUpdate.isEqual(startTimesCheck) || startLocalDateTimeUpdate.isAfter(startTimesCheck)) && (startLocalDateTimeUpdate.isEqual(endTimesCheck) || startLocalDateTimeUpdate.isBefore(endTimesCheck))) {
                 displayAlert(2);
                 return;
@@ -581,6 +586,13 @@ public class AppointmentMenuController implements Initializable {
         clearData();
     }
 
+    /**
+     * Deletes Appointments from the Database based on Appointment ID.
+     * This function also triggers notifications to let the user know that Appointments has been deleted.
+     * @param event Clicking the Delete Appointment Button
+     * @throws SQLException if exception has occurred
+     */
+
     @FXML
     void onActionDeleteAppointment(ActionEvent event) throws SQLException {
         String sqlDelete = "DELETE FROM appointments WHERE Appointment_ID = ?";
@@ -602,6 +614,12 @@ public class AppointmentMenuController implements Initializable {
         ps.setInt(1, appointmentIDDelete);
         ps.execute();
         addAppointmentDataToTables();
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        DialogPane dp = alert.getDialogPane();
+        dp.setStyle("-fx-font-family:sans-serif");
+        alert.setTitle("Appointment Deleted");
+        alert.setHeaderText("Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentType + "\nhas been deleted from Database");
+        alert.showAndWait();
         System.out.println("Appointment deleted from MySQL database");
         displayAlert(4);
         clearData();
@@ -609,6 +627,10 @@ public class AppointmentMenuController implements Initializable {
     }
 
 
+    /**
+     * This switch statement is used to display a variety of alert and error messages.
+     * @param alertType Alert selects a message based on case number.
+     */
     private void displayAlert(int alertType) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         Alert alertInfo = new Alert(Alert.AlertType.INFORMATION);
@@ -657,6 +679,9 @@ public class AppointmentMenuController implements Initializable {
         }
     }
 
+    /**
+     * Resets text fields and comboboxes after performing a Save or an Update.
+     */
     public void clearData() {
         appointmentTitleTF.clear();
         appointmentDescriptionTF.clear();
@@ -674,7 +699,7 @@ public class AppointmentMenuController implements Initializable {
 
 
     /**
-     * This method initializes the AppointmentMenuController.
+     * This method initializes the AppointmentMenuController and populates the Appointment Table View.
      * @param url The url is used to find the relative paths for the root object.
      * @param resourceBundle The resource bundle is used to localize the root object.
      */

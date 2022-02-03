@@ -3,28 +3,34 @@ package model;
 import java.util.ArrayList;
 
 public class ReportCustomerDivision {
-
-    public String firstLevelDivision;
+    /**
+     * Division Name
+     */
+    public String division;
+    /**
+     * List of Customers
+     */
     public ArrayList<String> customerList;
 
     /**
-     * @param firstLevelDivision the first-level division to set
+     * Report Customers By Division Constructor
+     * @param division Division
      * @param customerList the customer list to set
      */
-    public ReportCustomerDivision(String firstLevelDivision, ArrayList<String> customerList) {
-        this.firstLevelDivision = firstLevelDivision;
+    public ReportCustomerDivision(String division, ArrayList<String> customerList) {
+        this.division = division;
         this.customerList = customerList;
     }
 
     /**
-     * @return the first-level division
+     * @return Division Name
      */
-    public String getFirstLevelDivision() {
-        return firstLevelDivision;
+    public String getDivision() {
+        return division;
     }
 
     /**
-     * @return the customer list
+     * @return Customer List
      */
     public ArrayList<String> getCustomerList() {
         return customerList;

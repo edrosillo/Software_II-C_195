@@ -85,7 +85,7 @@ public class ReportMenuController implements Initializable {
     ComboBox<String> contactSelectCB;
 
     // Report View 3 - Show Customers by Division
-    @FXML Tab customerByDivisionTab;
+    @FXML Tab customerDivisionTab;
     @FXML TableView<ReportCustomerDivision> customerDivisionTable;
     @FXML TableColumn<ReportCustomerDivision, String> custbyDivDivisionCol;
     @FXML TableColumn<ReportCustomerDivision, ArrayList<String>> custbyDivCustomersCol;
@@ -113,12 +113,11 @@ public class ReportMenuController implements Initializable {
         stage.show();
     }
 
-    // report 1 -----
+    // Reports 1a and 1b
+    // Report 1a
     /**
-     * gets list of appointment types from all appointment data
-     * gets list of appointment types without duplicates
-     * gets total of type occurrences, creates instance of class and sets list for tableview
-     *
+     * Gathers the different Types of Appointments, ignores any duplicate types.
+     * Checks the frequency in which each Type appears, creates instance of the class and sets the list for tableview
      * @throws SQLException if exception has occurred
      */
     public void addAppointmentTypesTotals() throws SQLException {
@@ -145,12 +144,12 @@ public class ReportMenuController implements Initializable {
         appointmentsByTypeTable.setItems(appointmentReportTypes);
     }
 
+
+    // Report 1b
     /**
-     * gets list of appointment months from all appointment data
-     * gets list of months without duplicates
-     * gets total of month occurrences, creates instance of class and sets list for tableview
-     *
-     * @throws SQLException if exception has occurred
+     * Generates a list of Months in which Appointments are scheduled, any duplicates are ignored.
+     * Calculates the occurrence of  each month, creates an instance of class and sets the list for tableview
+     * @throws SQLException if some form of exception is triggered
      */
     public void addAppointmentMonthsTotals() throws SQLException {
         String monthToSet;
@@ -180,19 +179,18 @@ public class ReportMenuController implements Initializable {
     }
 
     /**
-     * This function combines above functions so that the tables in this tab get populated with the necessary information
+     * Combines above functions in order for the tables in this first tab get populated with the pertinent information.
+     * @throws SQLException if some form of exception is triggered
      */
     public void addTypeMonthTotalAppointments() throws SQLException {
         addAppointmentTypesTotals();
         addAppointmentMonthsTotals();
     }
 
-    // report 2 -----
-
+    // Report 2
     /**
-     * shows selection box and label
-     * sets contact names in comboBox
-     *
+     * The first step for this tab to work is to ake the selection Combobox and label visible.
+     * This populates the Contact Names into the Combobox.
      * @throws SQLException if exception has occurred
      */
     public void addAppointmentsByContact() throws SQLException {
@@ -208,10 +206,7 @@ public class ReportMenuController implements Initializable {
     }
 
     /**
-     * gets selected contact name from combo box
-     * matches selected name with contact ID from all contact data
-     * gets selected contact appointment data from all appointment data
-     *
+     * Uses the selected name from the Combobox to find all the matching Appointments connected to that Customer.
      * @throws SQLException if exception has occurred
      */
     public void addContactAppointmentData() throws SQLException {
@@ -239,9 +234,12 @@ public class ReportMenuController implements Initializable {
     }
 
     // Report View 3 - Show Customers by Division
-
     /**
-     * This method matches Division ID with Customer Division ID in order to prevent duplicates additions to the database.
+     * Report 3 - Customer by Division
+     * This method matches Division ID with Customer_Division ID in order to populate the table and display which Customer is located in which Division.
+     * This type of report is important so company management can view which Division contains the most valuable Customers,
+     * and in which Division the company should invest more in order to gain more customers.
+     *  @throws SQLException if exception has occurred
      */
     public void addCustomersByDivision() throws SQLException {
         String divisionSet ;
@@ -260,9 +258,9 @@ public class ReportMenuController implements Initializable {
                     divisionSet = division.getDivisionName();
                     customerListSet.add(customer.getCustomerName());
                     record = new ReportCustomerDivision(divisionSet, customerListSet);
-                    if (!record.getFirstLevelDivision().equals(previousDivisionName)) {
+                    if (!record.getDivision().equals(previousDivisionName)) {
                         observableListToSet.add(record);
-                        previousDivisionName = record.getFirstLevelDivision();
+                        previousDivisionName = record.getDivision();
                     }
                 }
             }
@@ -270,6 +268,11 @@ public class ReportMenuController implements Initializable {
         customerDivisionTable.setItems(observableListToSet);
     }
 
+    /**
+     * This method initializes the MainController and populates the all table views required for the different reports.
+     * @param url The url is used to find the relative paths for the root object.
+     * @param resourceBundle The resource bundle is used to localize the root object.
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -297,7 +300,7 @@ public class ReportMenuController implements Initializable {
         apptsByContactCustomerIDCol.setCellValueFactory(new PropertyValueFactory<>("customerID"));
 
         // Report View 3 - Show Customers by Division
-        custbyDivDivisionCol.setCellValueFactory(new PropertyValueFactory<>("firstLevelDivision"));
+        custbyDivDivisionCol.setCellValueFactory(new PropertyValueFactory<>("division"));
         custbyDivCustomersCol.setCellValueFactory(new PropertyValueFactory<>("customerList"));
     }
 

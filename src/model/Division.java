@@ -5,16 +5,24 @@ import javafx.collections.ObservableList;
 
 
 public class Division {
-
+    /**
+     * Division ID
+     */
     private int divisionID;
+    /**
+     * Division Name
+     */
     private String divisionName;
+    /**
+     * Country ID (FK)
+     */
     public int countryID;
 
     /**
-     *
-     * @param divisionID the division ID to set
-     * @param divisionName the division name to set
-     * @param country_ID the country ID to set
+     * Division Constructor
+     * @param divisionID Division ID
+     * @param divisionName Division Name
+     * @param countryID Country ID Foreign Key
      */
     public Division(int divisionID, String divisionName, int countryID) {
         this.divisionID = divisionID;
@@ -39,28 +47,23 @@ public class Division {
     public int getCountryID() { return countryID; }
 
 
-    /** This method searches the first level division combo box for matching division ID of the customer selected.
-     * @param divId The customer's division ID.
+    /** This method searches the first level division combobox for matching division ID of the customer selected.
+     * @param divID The customer's division ID.
      * @return Returns the first level division with matching ID.*/
-    public static Division getDivisionIdMatch(int divId) {
+    public static Division getDivisionIdMatch(int divID) {
         ObservableList<Division> divisions = DivisionsQuery.getAllDivisions();
 
         Division division = null;
 
-        for (int i = 0; i < divisions.size(); i++) {
-            Division firstLevelDivision = divisions.get(i);
-
-            if (firstLevelDivision.getDivisionID() != divId) {
-                continue;
+        for (Division firstLevelDivision : divisions) {
+            if (firstLevelDivision.getDivisionID() != divID) {
             } else {
                 division = firstLevelDivision;
                 break;
             }
 
         }
-
         return division;
-
     }
 
 

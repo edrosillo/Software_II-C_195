@@ -14,26 +14,9 @@ import java.time.LocalDateTime;
 
 public abstract class AppointmentQuery {
 
-/*    public static void select() throws SQLException {
-        String sql = "SELECT * FROM appointments, customers WHERE customers.Customer_ID = appointments.Customer_ID"; //SQL
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql); //Create Prepared Statement
-        ResultSet rs = ps.executeQuery();
-        while(rs.next()) {
-            int appointmentID = rs.getInt("Appointment_ID");
-            String customerName = rs.getString("Customer_Name");
-            String title = rs.getString("Title");
-            String description = rs.getString("Description");
-            String location = rs.getString("Location");
-            String type = rs.getString("Type");
-            LocalDateTime start = rs.getTimestamp("Start").toLocalDateTime();
-            LocalDateTime end = rs.getTimestamp("End").toLocalDateTime();
-            ListManager.addAppointment(new Appointment(appointmentID, customerName ,title, description, location, type,
-            start, end));
-        }
-    }*/
-
     /**
-     * @return observable list of all appointment data from database with timestamps converted to local time
+     * @return Creates and Observable List of all appointment data from database using a Select statement timestamps are then changed to local time
+     * @throws SQLException if exception has occurred
      */
     public static ObservableList<Appointment> getAllAppointments() throws SQLException {
         ObservableList<Appointment> appointmentsObservableList = FXCollections.observableArrayList();

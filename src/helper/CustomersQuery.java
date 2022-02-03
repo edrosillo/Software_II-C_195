@@ -10,6 +10,10 @@ import java.sql.SQLException;
 
 public abstract class CustomersQuery {
 
+    /**
+     * Pulls all Customers data from database using a Select statement.
+     * @throws SQLException if exception has occurred
+     */
     public static void select() throws SQLException {
         String sql = "SELECT * FROM customers, first_level_divisions, countries WHERE customers.Division_ID = first_level_divisions.Division_ID";
         PreparedStatement ps = JDBC.connection.prepareStatement(sql);//Create Prepared Statement
@@ -28,27 +32,7 @@ public abstract class CustomersQuery {
         }
     }
 
-    public static int insert(String customerName, String address, String postalCode, String phone) throws SQLException {
-        /*int customerId = 0;
-        PreparedStatement ps1 = JDBC.connection.prepareStatement("SELECT MAX(customerId) FROM customer");
-        ResultSet rs = ps1.executeQuery();
-        while(rs.next()){
-            customerId = rs.getInt("MAX(customerId)");
-        }
-        customerId++;
-         */
-
-        String sql = "INSERT INTO customer(customerName, address, postalCode, phone) VALUES(?,?,?,?)";
-        PreparedStatement ps = JDBC.connection.prepareStatement(sql);//Create Prepared Statement
-        ps.setString(1, customerName);
-        ps.setString(2, address);
-        ps.setString(3,postalCode);
-        ps.setString(4, phone);
-        return ps.executeUpdate();
-
-    }
-
-    public static int getMaxID() throws SQLException {
+/*    public static int getMaxID() throws SQLException {
         int customerId = 0;
         PreparedStatement ps1 = JDBC.connection.prepareStatement("SELECT MAX(customerId) FROM customer");
         ResultSet rs = ps1.executeQuery();
@@ -56,10 +40,11 @@ public abstract class CustomersQuery {
             customerId = rs.getInt(1);
         }
         return customerId;
-    }
+    }*/
 
     /**
-     * @return observable list of all customer data from database
+     * @return Creates and Observable List of all Customers data from database using a Select statement.
+     * @throws SQLException if exception has occurred
      */
     public static ObservableList<Customer> getAllCustomers() throws SQLException {
         ObservableList<Customer> customersObservableList = FXCollections.observableArrayList();

@@ -2,29 +2,59 @@ package model;
 import java.time.LocalDateTime;
 
 public class Appointment {
+    /**
+     * Appointment ID
+     */
     private int appointmentID;
+    /**
+     * Title of the Appointment
+     */
     private String appointmentTitle;
+    /**
+     * Description of the Appointment
+     */
     private String appointmentDescription;
+    /**
+     * Location of the Appointment
+     */
     private String appointmentLocation;
+    /**
+     * Type of Appointment
+     */
     private String appointmentType;
+    /**
+     * Appointment Start Time
+     */
     private LocalDateTime start;
+    /**
+     * Appointment End Time
+     */
     private LocalDateTime end;
+    /**
+     * Customer ID (FK)
+     */
     public int customerID;
+    /**
+     * User ID (FK)
+     */
     public int userID;
+    /**
+     * Contact ID (FK)
+     */
     public int contactID;
 
     /**
-     *
-     * @param appointmentID the appointment ID to set
-     * @param appointmentTitle the appointment title to set
-     * @param appointmentDescription the appointment description to set
-     * @param appointmentLocation the appointment location to set
-     * @param appointmentType the appointment type to set
-     * @param start the appointment start LocalDateTime to set
-     * @param end the appointment end LocalDateTime to set
-     * @param customerID the customer ID to set
-     * @param userID the user ID to set
-     * @param contactID the contact ID to set
+     * Appointment Constructor
+     * @param appointmentID ID of the Appointment
+     * @param appointmentTitle Title of the Appointment
+     * @param appointmentDescription Description of the Appointment
+     * @param appointmentLocation Location of the Appointment
+     * @param appointmentType Type of Appointment
+     * @param start Appointment Start Time
+     * @param end Appointment End Time
+     * @param customerID Customer ID Foreign Key
+     * @param userID User ID Foreign Key
+     * @param contactID Contact ID Foreign Key
      */
     public Appointment(int appointmentID, String appointmentTitle, String appointmentDescription,
                         String appointmentLocation, String appointmentType, LocalDateTime start, LocalDateTime end, int customerID,
@@ -42,80 +72,70 @@ public class Appointment {
     }
 
     /**
-     *
-     * @return the appointmentID
+     * @return appointmentID
      */
     public int getAppointmentID() {
         return appointmentID;
     }
 
     /**
-     *
-     * @return the appointment title
+     * @return appointment title
      */
     public String getAppointmentTitle() {
         return appointmentTitle;
     }
 
     /**
-     *
-     * @return the appointment description
+     * @return appointment description
      */
     public String getAppointmentDescription() {
         return appointmentDescription;
     }
 
     /**
-     *
-     * @return the appointment location
+     * @return appointment location
      */
     public String getAppointmentLocation() {
         return appointmentLocation;
     }
 
     /**
-     *
-     * @return the appointment type
+     * @return appointment type
      */
     public String getAppointmentType() {
         return appointmentType;
     }
 
     /**
-     *
-     * @return the start LocalDateTime
+     * @return start LocalDateTime
      */
     public LocalDateTime getStart() {
         return start;
     }
 
     /**
-     *
-     * @return the end LocalDateTime
+     * @return  end LocalDateTime
      */
     public LocalDateTime getEnd() {
         return end;
     }
 
     /**
-     *
-     * @return the customer ID
+     * @return  customer ID
      */
     public int getCustomerID () {
         return customerID;
     }
 
     /**
-     *
-     * @return the user ID
+     * @return  user ID
      */
     public int getUserID() {
         return userID;
     }
 
     /**
-     *
-     * @return the contact ID
+     * @return contact ID
      */
     public int getContactID() {
         return contactID;

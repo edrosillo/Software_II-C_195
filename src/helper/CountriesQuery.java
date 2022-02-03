@@ -10,8 +10,10 @@ import java.sql.SQLException;
 
 public abstract class CountriesQuery {
 
-    /**This method pulls a list of countries from countries database table.
-     * @return Returns array list of all country from database.*/
+    /**Retrieves a list of all countries from countries database using a Select statement.
+     * @return Returns array list of all country from database.
+     */
+
     public static ObservableList<Country> getAllCountries(){
         ObservableList<Country> countryList = FXCollections.observableArrayList();
 

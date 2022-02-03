@@ -11,10 +11,9 @@ import java.sql.SQLException;
 public class ContactsQuery {
 
     /**
-     * @return Creates an Observable List of all contact data from database
-     * @throws SQLException
+     * @return Creates an Observable List of all contact data from database using a Select statement
+     * @throws SQLException if exception has occurred
      */
-
     public static ObservableList<Contact> getAllContacts() throws SQLException {
         ObservableList<Contact> allContactsObservableList = FXCollections.observableArrayList();
         String sql = "SELECT * from contacts";

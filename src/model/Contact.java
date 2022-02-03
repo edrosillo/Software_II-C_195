@@ -1,15 +1,24 @@
 package model;
 
 public class Contact {
-
+    /**
+     * Contact ID
+     */
     public int contactID;
+    /**
+     * Contact Name
+     */
     public String contactName;
+    /**
+     * Contact Email
+     */
     public String contactEmail;
 
     /**
-     * @param contactID the contact ID to set
-     * @param contactName the contact name to set
-     * @param contactEmail the contact email to set
+     * Contact Constructor
+     * @param contactID Contact ID
+     * @param contactName Contact Name
+     * @param contactEmail Contact Email
      */
     public Contact(int contactID, String contactName, String contactEmail) {
         this.contactID = contactID;
@@ -18,19 +27,15 @@ public class Contact {
     }
 
     /**
-     * @return the contact ID
+     * @return Contact ID
      */
     public int getId() { return contactID; }
-
     /**
-     *
-     * @return the contact name
+     * @return Contact name
      */
     public String getContactName() { return contactName; }
-
     /**
-     *
-     * @return the contact email
+     * @return Contact Email
      */
     public String getContactEmail() { return contactEmail; }
 }

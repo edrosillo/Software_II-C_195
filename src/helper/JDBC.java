@@ -4,6 +4,10 @@ import java.sql.*;
 
 public abstract class JDBC {
 
+    /**
+     * All the necessary information and credentials to connect to the MySQL Database.
+     */
+
     private static final String protocol = "jdbc";
     private static final String vendor = ":mysql:";
     private static final String location = "//localhost/";
@@ -14,6 +18,9 @@ public abstract class JDBC {
     private static String password = "Passw0rd!"; // Password
     public static Connection connection;  // Connection Interface
 
+    /**
+     * Initiates the connection to the Database and prints a success or fail message in the console.
+     */
     public static void openConnection()
     {
         try {
@@ -27,6 +34,9 @@ public abstract class JDBC {
         }
     }
 
+    /**
+     * Closes the connection to the Database and prints a message stating that the connection has been closed.
+     */
     public static void closeConnection() {
         try {
             connection.close();

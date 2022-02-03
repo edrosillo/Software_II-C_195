@@ -38,9 +38,6 @@ public class CustomerMenuController implements Initializable {
      */
     Parent scene;
 
-    int lastButton = -1; // used with lambda #2
-
-
     @FXML
     public TableView<Customer> customerTable;
     @FXML
@@ -88,6 +85,15 @@ public class CustomerMenuController implements Initializable {
     @FXML
     private TextField customerPhoneNumberTF;
 
+    /**
+     * Integer variable used with lambda #2
+     */
+    int savedOrModified = -1;
+
+    /**
+     * Switches the scene to the Appointment Menu
+     * @param event The Radio Button click event
+     */
     @FXML
     void goToAppointmentRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -97,6 +103,10 @@ public class CustomerMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Switches the scene to the Reports Menu
+     * @param event The Radio Button click event
+     */
     @FXML
     void goToReportsRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -106,6 +116,13 @@ public class CustomerMenuController implements Initializable {
         stage.show();
     }
 
+    /**
+     * Deletes Customers from the Database based on Customer ID.
+     * Will also delete Appointments assigned to said Customer.
+     * This function also triggers notifications to let the user know that Appointments and the Customer have been deleted.
+     * @param event Clicking the Delete Customer Button
+     * @throws SQLException if exception has occurred
+     */
     @FXML
     void deleteCustomer(ActionEvent event) throws SQLException {
 
@@ -116,7 +133,7 @@ public class CustomerMenuController implements Initializable {
         for (Appointment appointment : appointmentsObservableList) {
             int customerIDCheck = appointment.getCustomerID();
             int appointmentIDDelete = appointment.getAppointmentID();
-            String appointmentTypeMessage = appointment.getAppointmentType();
+            String appointmentType = appointment.getAppointmentType();
             if (customerIDDelete == customerIDCheck) {
                 String sqlDeleteAppointments = "DELETE FROM appointments WHERE Appointment_ID = ?";
                 PreparedStatement ps1 = JDBC.connection.prepareStatement(sqlDeleteAppointments);
@@ -126,7 +143,7 @@ public class CustomerMenuController implements Initializable {
                 DialogPane dp = alert.getDialogPane();
                 dp.setStyle("-fx-font-family:sans-serif");
                 alert.setTitle("Appointment Deleted");
-                alert.setHeaderText("Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentTypeMessage + "\nhas been deleted from Database");
+                alert.setHeaderText("Appointment with ID: " + appointmentIDDelete + "\nAppointment of Type: " + appointmentType + "\nhas been deleted from Database");
                 alert.showAndWait();
             }
         }
@@ -144,15 +161,12 @@ public class CustomerMenuController implements Initializable {
     }
 
     /**
-     *
-     * gets data that was populated in boxes
-     * matches first-level division name with ID
-     * gets and executes prepared update statement
-     * calls appropriate functions to display data and reset boxes
-     *
+     * Populates the test fields in that make up the form based on selection from the table view.
+     * Finds the match between Division Name and Division ID assigned to the Customer.
+     * Once user has updated any necessary information this function performs the update statement
      * @throws SQLException if exception has occurred
      */
-    public void modifyCustomer() throws SQLException {
+    public void onActionModifyCustomer() throws SQLException {
         int idUpdate = Integer.parseInt(customerIDTF.getText());
         String nameUpdate = customerNameTF.getText();
         String addressUpdate = customerAddressTF.getText();
@@ -183,20 +197,26 @@ public class CustomerMenuController implements Initializable {
         ps.setInt(9, idUpdate);
         ps.execute();
         addCustomerDataToTable();
-        consoleNotification();
+        lambdaConsoleNotification();
         clearData();
     }
 
+    /**
+     * Filters the Divisions and assigns them to the Country they belong.
+     * This is done by matching the Country ID.
+     * The Combobox will only display the Divisions that belong to a particular Country.
+     * @param event Selecting a Country from the Combobox
+     */
     @FXML
     void filterDivisionCB(ActionEvent event) {
 
         ObservableList<Division> allFirstLevelDivisions = DivisionsQuery.getAllDivisions();
-        ObservableList<String> divisionNamesUS = FXCollections.observableArrayList();
+        ObservableList<String> divisionNamesUSA = FXCollections.observableArrayList();
         ObservableList<String> divisionNamesUK = FXCollections.observableArrayList();
         ObservableList<String> divisionNamesCanada = FXCollections.observableArrayList();
         for (Division division : allFirstLevelDivisions) {
             if (division.getCountryID() == 1) {
-                divisionNamesUS.add(division.getDivisionName());
+                divisionNamesUSA.add(division.getDivisionName());
             }
             else if (division.getCountryID() == 2) {
                 divisionNamesUK.add(division.getDivisionName());
@@ -206,21 +226,27 @@ public class CustomerMenuController implements Initializable {
             }
         }
         String selectedCountry = customerCountryCB.getSelectionModel().getSelectedItem();
-        if (selectedCountry.equals("U.S")) {
-            customerDivisionCB.setItems(divisionNamesUS);
-        }
-        else if (selectedCountry.equals("UK")) {
-            customerDivisionCB.setItems(divisionNamesUK);
-        }
-        else if (selectedCountry.equals("Canada")) {
-            customerDivisionCB.setItems(divisionNamesCanada);
+        switch (selectedCountry) {
+            case "U.S":
+                customerDivisionCB.setItems(divisionNamesUSA);
+                break;
+            case "UK":
+                customerDivisionCB.setItems(divisionNamesUK);
+                break;
+            case "Canada":
+                customerDivisionCB.setItems(divisionNamesCanada);
+                break;
         }
 
     }
 
-
+    /**
+     * This acts as an event listener for when a Customer is selected from the Table View and
+     * the pertinent information is added to the Text Boxes
+     * @param event selecting a Customer from the Table
+     */
     @FXML
-    void addCustomerDataToBoxes(MouseEvent event) {
+    void addCustomerDataToFields(MouseEvent event) {
         Customer selectedCustomer = customerTable.getSelectionModel().getSelectedItem();
         if (selectedCustomer != null) {
             ObservableList<Country> allCountries = CountriesQuery.getAllCountries();
@@ -257,16 +283,10 @@ public class CustomerMenuController implements Initializable {
     }
 
     /**
-     *
-     * verifies
-     * auto-generates customer ID
-     * matches division name string with division ID
-     * gets and executes prepared insert statement
-     * calls appropriate functions to display data and reset boxes
-     *
+     * Inserts the new Customer into the Database based on the information provided in the Text Fields and Comboboxes
      * @throws SQLException if exception has occurred
      */
-    public void saveCustomer() throws SQLException {
+    public void onActionSaveCustomer() throws SQLException {
         ObservableList<Customer> allCustomersList = CustomersQuery.getAllCustomers();
         int lastID = 0;
         for (Customer customer : allCustomersList) {
@@ -305,14 +325,13 @@ public class CustomerMenuController implements Initializable {
         ps.setInt(10, divisionIDAdd);
         ps.execute();
         addCustomerDataToTable();
-        consoleNotification();
+        lambdaConsoleNotification();
         clearData();
     }
 
-
-
     /**
-     * @throws SQLException if exception has occurred
+     * Adds the Customers saved on the Database to the Table View.
+     *  @throws SQLException if exception has occurred
      */
     public void addCustomerDataToTable() throws SQLException {
         ObservableList<Customer> allCustomersList = CustomersQuery.getAllCustomers();
@@ -358,11 +377,23 @@ public class CustomerMenuController implements Initializable {
                 alertInfo.setContentText("Selected customer has been deleted from database");
                 alertInfo.showAndWait();
                 break;
+            case 5:
+                alertInfo.setTitle("Info");
+                alertInfo.setHeaderText("Customer Added");
+                alertInfo.setContentText("New customer added to Database");
+                alertInfo.showAndWait();
+                break;
+            case 6:
+                alertInfo.setTitle("Info");
+                alertInfo.setHeaderText("Customer Updated");
+                alertInfo.setContentText("Customer updated in the Database");
+                alertInfo.showAndWait();
+                break;
         }
     }
 
     /**
-     * resets boxes for appropriate user interaction
+     * Resets text fields and comboboxes after performing a Save or an Update.
      */
     public void clearData() {
         customerTable.getSelectionModel().clearSelection();
@@ -380,6 +411,10 @@ public class CustomerMenuController implements Initializable {
      *
      * @param url The url is used to find the relative paths for the root object.
      * @param resourceBundle The resource bundle is used to localize the root object.
+     *
+     * Lambda 1:
+     * The goal of this lambda expression is to add Contact Names to the Combobox
+     *
      */
 
     @Override
@@ -403,9 +438,9 @@ public class CustomerMenuController implements Initializable {
         ObservableList<Division> allDivisions = DivisionsQuery.getAllDivisions();
         ObservableList<String> divisionAllNames = FXCollections.observableArrayList();
 
-        // Lambda #1 -
+        //Lambda 1: Simplifying adding Clients to Combobox
         allDivisions.forEach(Division -> divisionAllNames.add(Division.getDivisionName()));
-        setCustomerOptionAddAndUpdateButtonActions();
+        loadCustomer();
 
         customerDivisionCB.setItems(divisionAllNames);
         customerDivisionCB.setItems(divisionAllNames);
@@ -419,46 +454,55 @@ public class CustomerMenuController implements Initializable {
 
     }
 
+
     /**
-     * method references lambda #2 -- purpose is to confirm successful add/update and to simplify code in add and update
-     * functions
-     * @param string beginning part of total string ("Customer")
-     * @param fn variable string based on which button is clicked (" added to database" or "updated in database"
-     * @return appropriate user notification (ex. Customer added to database or Customer updated in database)
+     *  Lambda 2
+     *  The purpose of this lambda expression is to communicate to the user that the adding or updating action they performed
+     *  has been successful.
+     */
+    public void lambdaConsoleNotification() {
+        Function<String, String> fn = null;
+        if (savedOrModified == 1) {
+            fn = parameter -> parameter + " saved to the Database";
+        }
+        if (savedOrModified == 2) {
+            fn = parameter -> parameter + " modified in the Database";
+        }
+        assert fn != null;
+        String userNotification = changeNotification("Customer", fn);
+        System.out.println(userNotification);
+        savedOrModified = -1;
+    }
+
+    /**
+     * Lambda 2 Reference:
+     * Function to simplify code while Saving and Modifying customers.
+     * @param string Customer
+     * @param fn Finishes the notification based on wether a new Customer was added or one was Modified.
+     * @return Notification based on button selected
      */
     public String changeNotification(String string, Function<String, String> fn) {
         return fn.apply(string);
     }
 
     /**
-     *  lambda #2 -- purpose is to confirm successful add/update and to simplify code in add and update functions
+     * Values to be used with Lambda 2
      */
-    public void consoleNotification() {
-        Function<String, String> fn = null;
-        if (lastButton == 1) { fn = parameter -> parameter + " added to the Database"; }
-        if (lastButton == 2) { fn = parameter -> parameter + " updated in database"; }
-        String userNotification = changeNotification("Customer", fn);
-        System.out.println(userNotification);
-        lastButton = -1;
+    public void loadCustomer() {
+        saveCustomerBtn.setOnAction(e -> { savedOrModified = 1;
+            try {
+                onActionSaveCustomer();
+        } catch (SQLException saved)
+            {
+                saved.printStackTrace();}});
+        modifyCustomerBtn.setOnAction(e -> { savedOrModified = 2;
+            try {
+                onActionModifyCustomer();
+        } catch (SQLException modified)
+            {
+                modified.printStackTrace();}});
     }
-
-    /**
-     * sets button values for lambda #2
-     */
-    public void setCustomerOptionAddAndUpdateButtonActions() {
-        saveCustomerBtn.setOnAction(e -> { lastButton = 1;
-            try { saveCustomer();
-        } catch (SQLException throwables)
-            { throwables.printStackTrace();}});
-        modifyCustomerBtn.setOnAction(e -> { lastButton = 2;
-            try { modifyCustomer();
-        } catch (SQLException throwables)
-            { throwables.printStackTrace();}});
-    }
-
-
 }
-
 
 /*    @FXML
     void onActionSaveCustomer(ActionEvent event) throws  IOException{

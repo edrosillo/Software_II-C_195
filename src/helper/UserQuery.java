@@ -10,8 +10,12 @@ import java.sql.SQLException;
 
 //private static final String loginQuery = "SELECT * FROM users WHERE email_id = ? and password = ?";
 
+
 public abstract class UserQuery {
 
+    /**
+     * This method is retrieves all the data from the Users table in the Database using a select statement.
+     */
     public static void select() throws SQLException {
         String sql = "SELECT * FROM users"; //SQL
         PreparedStatement ps = JDBC.connection.prepareStatement(sql); //Create Prepared Statement
@@ -24,6 +28,9 @@ public abstract class UserQuery {
         }
     }
 
+    /**
+     * This method is used to validate the information provided in the Log In Screen agains the data in the Database.
+     */
     public static boolean validate(String userName, String password) throws SQLException {
         try{
             String sql = "SELECT * FROM users WHERE User_Name = ? and Password = ?";
@@ -47,7 +54,8 @@ public abstract class UserQuery {
     }
 
     /**
-     * @return observable list of all user data from database
+     * @return Creates and Observable List of all User data from database using a Select statement timestamps are then changed to local time
+     * @throws SQLException if exception has occurred
      */
     public static ObservableList<User> getAllUsers() throws SQLException {
         ObservableList<User> usersObservableList = FXCollections.observableArrayList();

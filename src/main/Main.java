@@ -8,9 +8,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import javax.swing.*;
-import javax.swing.plaf.FontUIResource;
-import java.awt.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 /**
@@ -25,13 +23,11 @@ public class Main extends Application {
     /**
      * The start method creates the first screen in the application.
      * It generates FXML stage and loads the GUI and information of the initial scene.
-     *
      * @param primaryStage This will be the GUI and information the user will see.
-     *
      */
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(Stage primaryStage) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("../view/Login.fxml"));
         root.setStyle("-fx-font-family: 'SansSerif';");
         primaryStage.setTitle("Appointment Management System");
@@ -41,17 +37,13 @@ public class Main extends Application {
 
     /**
      * The main method is the entry point to the application. It launches the Java application.
-     * The sample data is contained within the main method so it populates the tables as soon as the program is launched.
-     *
-     * @param args In the case of this application the arguments are all the information that will populate the Parts and Products tables.
+     * @param args The arguments are the functions that open and close the connection to the Database.
      */
 
-    public static void main(String[] args) throws SQLException {
+    public static void main(String[] args) {
+
         JDBC.openConnection();
-        //AppointmentQuery.select();
-        UIManager.put("OptionPane.messageFont", new FontUIResource(new Font("SansSerif", Font.PLAIN, 13)));
         launch(args);
         JDBC.closeConnection();
-
     }
 }
