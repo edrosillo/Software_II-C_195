@@ -27,6 +27,10 @@ import model.User;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This class adds and controls all the functionality of the Appointments Menu.
+ */
+
 public class AppointmentMenuController implements Initializable {
     /**
      * The stage object that will be used to hold the GUI and data of the new screens.
@@ -168,6 +172,7 @@ public class AppointmentMenuController implements Initializable {
     /**
      * Switches the scene to the Customer Menu
      * @param event The Radio Button click event
+     * @throws IOException in case of an input or output exception
      */
     public void goToCustomerRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -180,6 +185,7 @@ public class AppointmentMenuController implements Initializable {
     /**
      * Switches the scene to the Reports Menu
      * @param event The Radio Button click event
+     * @throws IOException in case of an input or output exception
      */
     public void goToReportsRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -272,6 +278,7 @@ public class AppointmentMenuController implements Initializable {
     /**
      * The method is used to add the data to the Appointment Tables in the different tabs.
      * The data is retrieved from MySQL via the AppointmentsQuery class
+     * @throws SQLException if exception has occurred
      */
     public void addAppointmentDataToTables() throws SQLException {
         ObservableList<Appointment> allAppointmentsList = AppointmentQuery.getAllAppointments();
@@ -300,6 +307,7 @@ public class AppointmentMenuController implements Initializable {
     /**
      * This method retrieves the data of a selected appointment and populates boxes
      * matches the Contact ID with the Contact Name and is displayed in the ComboBox
+     * @throws SQLException if exception has occurred
      */
     public void addAppointmentDataToBoxes() throws SQLException {
         Appointment selectedAppointment = null;

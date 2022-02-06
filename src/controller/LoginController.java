@@ -3,7 +3,6 @@ package controller;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 
 import helper.JDBC;
 import helper.UserQuery;
@@ -26,6 +25,11 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Locale;
 import java.util.ResourceBundle;
+
+
+/**
+ * This class adds and controls all the functionality of the Login Screen.
+ */
 
 public class LoginController implements Initializable {
 
@@ -66,10 +70,14 @@ public class LoginController implements Initializable {
      */
     Parent scene;
 
-    //Variables used in functions within Login Controller.
+    //Variables used in methods within Login Controller.
     boolean successLogin = false;
-    String errorTitle = "Log-In Failed";
-    String errorMessage ="Invalid username or password";
+    String logInFailTitle = "Log-In Failed";
+    String logInFailMessage ="Invalid username or password";
+    String plsEnterUserNameTitle = "Error";
+    String plsEnterUserNameMessage = "Please enter username";
+    String plsEnterPasswordTitle = "Error";
+    String plsEnterPasswordMessage = "Please enter password";
 
     /**
      * This method Exits the program.
@@ -92,12 +100,13 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * This function validates the Username and Password against data that is already in the Database.
+     * This method validates the Username and Password against data that is already in the Database.
      * If fed proper credentials the program will proceed to the Appointment Menu part of the program.
-     * It triggers the appointment notification function which will tell users of they have any upcoming
+     * It triggers the appointment notification method which will tell users of they have any upcoming
      * appointments or not.
-     * It also triggers the userActivity function which logs successful and failed log in attempts.
-     * @throws IOException
+     * It also triggers the userActivity method which logs successful and failed log in attempts.
+     * @throws IOException in case an exception is triggered
+     * @param event Clicking the Submit Button
      */
 
     @FXML
@@ -136,7 +145,7 @@ public class LoginController implements Initializable {
     }
 
     /**
-     * This function sets checks the user's language and location settings.
+     * This method sets checks the user's language and location settings.
      * It will translate the interface into French if user’s computer language setting = fr.
      * Headers, Buttons, Labels and Error Messages are translated into French.
      */
@@ -168,15 +177,20 @@ public class LoginController implements Initializable {
                 userLocationLbl.setText((rb.getString("User,Location")).replaceAll(",", " ") +
                         ": " + currentZone);
             }
-            errorMessage = rb.getString("Invalid,username,or,password").replaceAll(",", " ");
-            errorTitle = rb.getString("Log-In,Failed").replaceAll(",", " ");
+            logInFailMessage = rb.getString("Invalid,username,or,password").replaceAll(",", " ");
+            logInFailTitle = rb.getString("Log-In,Failed").replaceAll(",", " ");
+            plsEnterUserNameMessage = rb.getString("Please,enter,username").replaceAll(",", " ");
+            plsEnterUserNameTitle = rb.getString("Error").replaceAll(",", " ");
+            plsEnterPasswordMessage = rb.getString("Please,enter,password").replaceAll(",", " ");
+            plsEnterPasswordTitle = rb.getString("Error").replaceAll(",", " ");
         }
     }
 
 
     /**
-     * This function used to create a log file of the user's activity
+     * This method used to create a log file of the user's activity.
      * which adds new entries as users log into the program.
+     * @throws IOException in case an exception is triggered
      */
     public void userActivity() throws IOException {
         LocalDate loginDate = LocalDateTime.now().toLocalDate();
@@ -221,18 +235,18 @@ public class LoginController implements Initializable {
                 alert.showAndWait();
                 break;
             case 3:
-                alertError.setTitle("Error");
-                alertError.setHeaderText("Please enter username");
+                alertError.setTitle(plsEnterUserNameTitle);
+                alertError.setHeaderText(plsEnterUserNameMessage);
                 alertError.showAndWait();
                 break;
             case 4:
-                alertError.setTitle("Error");
-                alertError.setHeaderText("Please enter password");
+                alertError.setTitle(plsEnterPasswordTitle);
+                alertError.setHeaderText(plsEnterPasswordMessage);
                 alertError.showAndWait();
                 break;
             case 5:
-                alertError.setTitle(errorTitle);
-                alertError.setHeaderText(errorMessage);
+                alertError.setTitle(logInFailTitle);
+                alertError.setHeaderText(logInFailMessage);
                 alertError.showAndWait();
                 break;
             case 6:

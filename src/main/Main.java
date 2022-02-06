@@ -10,6 +10,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.Locale;
 
 /**
  *
@@ -41,7 +42,7 @@ public class Main extends Application {
      */
 
     public static void main(String[] args) {
-
+        //Locale.setDefault(new Locale("fr")); //French Locale for Testing purposes.
         JDBC.openConnection();
         launch(args);
         JDBC.closeConnection();

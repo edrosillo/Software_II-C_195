@@ -12,7 +12,6 @@ public abstract class DivisionsQuery {
 
     /**
      * @return Creates and Observable List of all Division data from database using a Select statement.
-     * @throws SQLException if exception has occurred
      */
     public static ObservableList<Division> getAllDivisions(){
         ObservableList<Division> divisionList = FXCollections.observableArrayList();

@@ -15,6 +15,7 @@ public abstract class UserQuery {
 
     /**
      * This method is retrieves all the data from the Users table in the Database using a select statement.
+     * @throws SQLException if exception has occurred
      */
     public static void select() throws SQLException {
         String sql = "SELECT * FROM users"; //SQL
@@ -29,7 +30,11 @@ public abstract class UserQuery {
     }
 
     /**
-     * This method is used to validate the information provided in the Log In Screen agains the data in the Database.
+     * This method is used to validate the information provided in the Log In Screen against the data in the Database.
+     * @param userName Username to be validated
+     * @param password Password to be validated
+     * @throws SQLException if exception has occurred
+     * @return A boolean value to see wether or not the provided credentials are saved in the Database
      */
     public static boolean validate(String userName, String password) throws SQLException {
         try{

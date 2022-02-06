@@ -27,6 +27,10 @@ import java.time.LocalDateTime;
 import java.util.ResourceBundle;
 import java.util.function.Function;
 
+/**
+ * This class adds and controls all the functionality of the Customer Menu.
+ */
+
 public class CustomerMenuController implements Initializable {
     /**
      * The stage object that will be used to hold the GUI and data of the new screens.
@@ -92,7 +96,8 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * Switches the scene to the Appointment Menu
-     * @param event The Radio Button click event
+     * @param event Clicking the Radio Button to change scenes
+     * @throws IOException if exception has occurred
      */
     @FXML
     void goToAppointmentRB(ActionEvent event) throws IOException {
@@ -105,7 +110,8 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * Switches the scene to the Reports Menu
-     * @param event The Radio Button click event
+     * @param event Clicking the Radio Button to change scenes
+     * @throws IOException if exception has occurred
      */
     @FXML
     void goToReportsRB(ActionEvent event) throws IOException {
@@ -242,7 +248,7 @@ public class CustomerMenuController implements Initializable {
 
     /**
      * This acts as an event listener for when a Customer is selected from the Table View and
-     * the pertinent information is added to the Text Boxes
+     * the pertinent information is added to the Text Boxes.
      * @param event selecting a Customer from the Table
      */
     @FXML
@@ -283,7 +289,7 @@ public class CustomerMenuController implements Initializable {
     }
 
     /**
-     * Inserts the new Customer into the Database based on the information provided in the Text Fields and Comboboxes
+     * Inserts the new Customer into the Database based on the information provided in the Text Fields and Comboboxes.
      * @throws SQLException if exception has occurred
      */
     public void onActionSaveCustomer() throws SQLException {
@@ -413,7 +419,7 @@ public class CustomerMenuController implements Initializable {
      * @param resourceBundle The resource bundle is used to localize the root object.
      *
      * Lambda 1:
-     * The goal of this lambda expression is to add Contact Names to the Combobox
+     * The goal of this lambda expression is to add Contact Names and Division names to the Combobox in a more simple way.
      *
      */
 

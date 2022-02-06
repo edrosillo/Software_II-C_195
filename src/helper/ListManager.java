@@ -15,7 +15,8 @@ public abstract class ListManager {
     private static ObservableList<User> allUsers = FXCollections.observableArrayList();
 
     /**
-     * Adds user data to the Observable List of all User.
+     * Adds user data to the Observable List of all User
+     * @param user User to be added to the list
      */
     public static void addUser(User user) { allUsers.add(user);}
 

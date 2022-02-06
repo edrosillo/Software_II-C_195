@@ -26,6 +26,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
+/**
+ * This class adds and controls all the functionality of the Report Menu.
+ */
+
 public class ReportMenuController implements Initializable {
     /**
      * The stage object that will be used to hold the GUI and data of the new screens.
@@ -92,7 +96,8 @@ public class ReportMenuController implements Initializable {
 
 
     /**
-     * @param event on radio button press - switch from AppointmentForm to CustomerForm
+     * @param event on radio button press - switch from AppointmentForm to CustomerForm.
+     * @throws IOException in case an exception is triggered
      */
     public void goToCustomerRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
@@ -103,7 +108,8 @@ public class ReportMenuController implements Initializable {
     }
 
     /**
-     * @param event When the Radio Button is clicked the scene will change to Appointments Menu
+     * @param event When the Radio Button is clicked the scene will change to Appointments Menu.
+     * @throws IOException in case an exception is triggered
      */
     public void goToAppointmentRB(ActionEvent event) throws IOException {
         stage = (Stage)((RadioButton)event.getSource()).getScene().getWindow();
